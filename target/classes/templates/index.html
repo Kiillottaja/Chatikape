@@ -1,0 +1,27 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Otsikko</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+        <h1>Keskustelufoorumi!</h1>
+
+        <h2 th:text="${teksti}">testi</h2>
+
+        <ul>
+            <li th:each="alue: ${alueet}">
+                <a href="chat/talous">
+                    <span th:text="${alue.getNimi()}">aluenimi</span>
+                </a>
+            </li>
+
+            <li th:each="viesti: ${viestit}">
+                <span th:text="${viesti.toString()}">viesti</span>
+            </li>
+        </ul>
+
+    </body>
+</html>
