@@ -18,6 +18,10 @@ public class Kayttaja {
         this.nimimerkki = nimimerkki;
         this.name = name;
     }
+    
+    public Kayttaja(String nimimerkki) {
+        this.nimimerkki = nimimerkki;
+    }
 
     public String getNimimerkki() {
         return nimimerkki;

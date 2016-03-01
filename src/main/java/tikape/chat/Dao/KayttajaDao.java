@@ -97,4 +97,23 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
         connection.close();
     }
 
+    public boolean onkoTietokannassa(Kayttaja kayttaja) throws SQLException {
+        Connection conn = data.getConnection();
+        PreparedStatement stmt = conn.prepareStatement("SELECT nimimerkki FROM Kayttaja WHERE nimimerkki = ?");
+        stmt.setObject(1, kayttaja.getNimimerkki());
+
+        ResultSet rs = stmt.executeQuery();
+
+        boolean hasOne = rs.next();
+        if (!hasOne) {
+
+            rs.close();
+            stmt.close();
+            conn.close();
+            
+            return false;
+        }
+        return true;
+    }
+
 }

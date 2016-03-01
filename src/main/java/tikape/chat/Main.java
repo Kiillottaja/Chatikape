@@ -31,6 +31,11 @@ public class Main {
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
 
+        // asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
+        if (System.getenv("PORT") != null) {
+            port(Integer.valueOf(System.getenv("PORT")));
+        }
+
         Database data = new Database("jdbc:sqlite:chat.db");
         data.setDebugMode(true);
 
@@ -41,17 +46,58 @@ public class Main {
 
         get("/chat", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("teksti", "Keskustelualueet");
-            map.put("alueet", aDao.findAll());
-            map.put("viestit", vDao.keskustelunViestit(keDao.findOne(1)));
 
             return new ModelAndView(map, "index");
+
+        }, new ThymeleafTemplateEngine());
+
+        post("/chat", (req, res) -> {
+            String nimimerkki = req.queryParams("nimimerkki");
+            String salasana = req.queryParams("salasana");
+
+            Kayttaja kayt = new Kayttaja(nimimerkki);
+            if (kaDao.onkoTietokannassa(kayt)) {
+                return "Tervetuloa keskustelufoorumille " + nimimerkki;
+            }
+            return "Käyttäjätunnus tai salasana eivät täsmää";
+        });
+
+        get("/chat/luokayttaja", (req, res) -> {
+            HashMap map = new HashMap<>();
+
+            return new ModelAndView(map, "luokayttaja");
+
+        }, new ThymeleafTemplateEngine());
+
+        post("/chat/luokayttaja", (req, res) -> {
+            String nimimerkki = req.queryParams("nimimerkki");
+            String nimi = req.queryParams("nimi");
+            String salasana = req.queryParams("salasana");
+            String salasana2 = req.queryParams("salasana2");
+
+            if (!salasana.equals(salasana2)) {
+                return "Tarkasta salasanojen vastaavuus";
+            }
+
+            Kayttaja kayt = new Kayttaja(nimimerkki, nimi);
+            if (!kaDao.onkoTietokannassa(kayt)) {
+                kaDao.lisaaKayttaja(kayt);
+            }
+            return "Käyttäjä lisätty tietokantaan: " + nimimerkki;
+        });
+
+        get("/chat/alueet", (req, res) -> {
+            HashMap map = new HashMap<>();
+            map.put("teksti", "Keskustelualueet");
+            map.put("alueet", aDao.findAll());
+
+            return new ModelAndView(map, "alueet");
         }, new ThymeleafTemplateEngine());
 
         get("/chat/talous", (req, res) -> {
             HashMap map = new HashMap<>();
-            map.put("teksti", "Talous");
             map.put("keskustelut", aDao.alueenKeskustelut(aDao.findOne(1)));
+            map.put("viestit", vDao.keskustelunViestit(keDao.findOne(1)));
 
             return new ModelAndView(map, "talous");
         }, new ThymeleafTemplateEngine());

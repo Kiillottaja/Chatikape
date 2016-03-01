@@ -7,11 +7,26 @@
     </head>
 
     <body>
+        <h1>Talous</h1>
+
         <ul>
             <li th:each="keskustelu: ${keskustelut}">
-                <span th:text="${keskustelu.getOtsikko()}">viesti</span>
+                <a href="/chat/talous">
+                    <span th:text="${keskustelu.getOtsikko()}">otsikko</span>
+                </a>
+            </li>
+            <li th:each="viesti: ${viestit}">
+                <span th:text="${viesti.toString()}">viesti</span>
             </li>
         </ul>
 
+        <form method="POST" action="/chat/talous">
+            Nimimerkki:<br/>
+            <input type="text" name="nimimerkki"/><br/>
+            Viesti:<br/>
+            <input type="text" name="viesti"/><br/>
+            <input type="submit" value="Lähetä viesti"/>
+        </form>
+        
     </body>
 </html>
