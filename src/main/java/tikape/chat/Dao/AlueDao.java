@@ -32,96 +32,100 @@ public class AlueDao implements Dao<Alue, Integer> {
 
     @Override
     public Alue findOne(Integer key) throws SQLException {
-        Connection conn = data.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Alue WHERE id = ?");
-        stmt.setObject(1, key);
+        try (Connection conn = data.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Alue WHERE id = ?");
+            stmt.setObject(1, key);
 
-        ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
+            ResultSet rs = stmt.executeQuery();
+            boolean hasOne = rs.next();
+            if (!hasOne) {
+                return null;
+            }
+
+            Integer id = rs.getInt("id");
+            String nimi = rs.getString("nimi");
+
+            Alue a = new Alue(id, nimi);
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            return a;
         }
-
-        Integer id = rs.getInt("id");
-        String nimi = rs.getString("nimi");
-
-        Alue a = new Alue(id, nimi);
-
-        rs.close();
-        stmt.close();
-        conn.close();
-
-        return a;
-
     }
 
     @Override
     public List<Alue> findAll() throws SQLException {
         List<Alue> list = new ArrayList();
-        Connection conn = data.getConnection();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT id FROM Alue;");
+        try (Connection conn = data.getConnection()) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id FROM Alue;");
 
-        while (rs.next()) {
-            Integer id = rs.getInt("id");
+            while (rs.next()) {
+                Integer id = rs.getInt("id");
 
-            Alue k = findOne(id);
+                Alue k = findOne(id);
 
-            list.add(k);
+                list.add(k);
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            return list;
         }
-
-        rs.close();
-        stmt.close();
-        conn.close();
-
-        return list;
     }
 
     @Override
     public void delete(Integer key) throws SQLException {
-        Connection connection = data.getConnection();
-        Statement stmt = connection.createStatement();
+        try (Connection conn = data.getConnection()) {
+            Statement stmt = conn.createStatement();
 
-        stmt.executeUpdate("DELETE FROM Alue WHERE id = " + key + ";");
+            stmt.executeUpdate("DELETE FROM Alue WHERE id = " + key + ";");
 
-        stmt.close();
-        connection.close();
+            stmt.close();
+            conn.close();
+        }
     }
 
     public List<Keskustelu> alueenKeskustelut(Alue alue) throws SQLException {
         List<Keskustelu> list = new ArrayList();
-        Connection conn = data.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Alue, Keskustelu WHERE Alue.id = Keskustelu.alue_id AND Alue.id = ?");
-        stmt.setObject(1, alue.getId());
+        try (Connection conn = data.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Alue, Keskustelu WHERE Alue.id = Keskustelu.alue_id AND Alue.id = ?");
+            stmt.setObject(1, alue.getId());
 
-        ResultSet rs = stmt.executeQuery();
-        while (rs.next()) {
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
 
-            Integer id = rs.getInt("id");
-            String otsikko = rs.getString("otsikko");
+                Integer id = rs.getInt("id");
+                String otsikko = rs.getString("otsikko");
 
-            Keskustelu k = new Keskustelu(id, otsikko);
+                Keskustelu k = new Keskustelu(id, otsikko);
 
-            k.setAlue(alue);
+                k.setAlue(alue);
 
-            list.add(k);
+                list.add(k);
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            return list;
         }
-
-        rs.close();
-        stmt.close();
-        conn.close();
-
-        return list;
     }
 
     public void lisaaAlue(Alue alue) throws SQLException {
-        Connection connection = data.getConnection();
-        Statement stmt = connection.createStatement();
+        try (Connection conn = data.getConnection()) {
+            Statement stmt = conn.createStatement();
 
-        stmt.executeUpdate("INSERT INTO Alue (nimi) VALUES ('" + alue.getNimi() + "');");
-        stmt.close();
+            stmt.executeUpdate("INSERT INTO Alue (nimi) VALUES ('" + alue.getNimi() + "');");
+            stmt.close();
 
-        connection.close();
+            conn.close();
+        }
     }
 
 }

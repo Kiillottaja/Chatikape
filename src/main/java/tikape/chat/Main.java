@@ -30,13 +30,22 @@ public class Main {
      */
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
-
+        
         // asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
         if (System.getenv("PORT") != null) {
             port(Integer.valueOf(System.getenv("PORT")));
         }
 
-        Database data = new Database("jdbc:sqlite:chat.db");
+        // käytetään oletuksena paikallista sqlite-tietokantaa
+        String jdbcOsoite = "jdbc:sqlite:chatti.db";
+        // jos heroku antaa käyttöömme tietokantaosoitteen, otetaan se käyttöön
+        if (System.getenv("DATABASE_URL") != null) {
+            jdbcOsoite = System.getenv("DATABASE_URL");
+        }
+
+        Database db = new Database(jdbcOsoite);
+
+        Database data = new Database(jdbcOsoite);
         data.setDebugMode(true);
 
         KayttajaDao kaDao = new KayttajaDao(data);
@@ -82,8 +91,9 @@ public class Main {
             Kayttaja kayt = new Kayttaja(nimimerkki, nimi);
             if (!kaDao.onkoTietokannassa(kayt)) {
                 kaDao.lisaaKayttaja(kayt);
+                return "Käyttäjä lisätty tietokantaan: " + nimimerkki;
             }
-            return "Käyttäjä lisätty tietokantaan: " + nimimerkki;
+            return "Sinulla on jo käyttäjätunnus. Tervetuloa keskustelufoorumille " + kayt.getNimimerkki();
         });
 
         get("/chat/alueet", (req, res) -> {

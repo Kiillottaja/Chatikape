@@ -13,12 +13,19 @@ public class Kayttaja {
 
     private String nimimerkki;
     private String name;
+    private String salasana;
 
-    public Kayttaja(String nimimerkki, String name) {
+    public Kayttaja(String nimimerkki, String name, String salasana) {
         this.nimimerkki = nimimerkki;
         this.name = name;
+        this.salasana = salasana;
     }
-    
+
+    public Kayttaja(String nimimerkki, String salasana) {
+        this.nimimerkki = nimimerkki;
+        this.salasana = salasana;
+    }
+
     public Kayttaja(String nimimerkki) {
         this.nimimerkki = nimimerkki;
     }
@@ -30,6 +37,10 @@ public class Kayttaja {
     public String getName() {
         return name;
     }
+    
+    public String getSalasana() {
+        return salasana;
+    }
 
     public void setNimimerkki(String nimimerkki) {
         this.nimimerkki = nimimerkki;
@@ -37,6 +48,10 @@ public class Kayttaja {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setSalasana(String salasana) {
+        this.salasana = salasana;
     }
 
     @Override

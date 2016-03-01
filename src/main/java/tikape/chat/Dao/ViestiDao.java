@@ -32,111 +32,115 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     @Override
     public Viesti findOne(Integer key) throws SQLException {
-        Connection connection = data.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Viesti WHERE id = ?");
-        stmt.setObject(1, key);
+        try (Connection conn = data.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Viesti WHERE id = ?");
+            stmt.setObject(1, key);
 
-        ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
+            ResultSet rs = stmt.executeQuery();
+            boolean hasOne = rs.next();
+            if (!hasOne) {
+                return null;
+            }
+
+            Integer id = rs.getInt("id");
+            String nimimerkki = rs.getString("nimimerkki");
+            Integer keskusteluId = rs.getInt("keskustelu_id");
+            String teksti = rs.getString("teksti");
+            String time = rs.getString("pvm");
+
+            Viesti v = new Viesti(id, teksti, time);
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            v.setKayttaja(kaDao.findOne(nimimerkki));
+            v.setKeskustelu(keDao.findOne(keskusteluId));
+
+            return v;
         }
-
-        Integer id = rs.getInt("id");
-        String nimimerkki = rs.getString("nimimerkki");
-        Integer keskusteluId = rs.getInt("keskustelu_id");
-        String teksti = rs.getString("teksti");
-        String time = rs.getString("pvm");
-
-        Viesti v = new Viesti(id, teksti, time);
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        v.setKayttaja(kaDao.findOne(nimimerkki));
-        v.setKeskustelu(keDao.findOne(keskusteluId));
-
-        return v;
     }
 
     @Override
     public List<Viesti> findAll() throws SQLException {
         List<Viesti> list = new ArrayList();
-        Connection conn = data.getConnection();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT id FROM Viesti;");
+        try (Connection conn = data.getConnection()) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id FROM Viesti;");
 
-        while (rs.next()) {
-            Integer id = rs.getInt("id");
-            Viesti v = findOne(id);
+            while (rs.next()) {
+                Integer id = rs.getInt("id");
+                Viesti v = findOne(id);
 
-            list.add(v);
+                list.add(v);
 
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            return list;
         }
-
-        rs.close();
-        stmt.close();
-        conn.close();
-
-        return list;
     }
 
     @Override
     public void delete(Integer key) throws SQLException {
-        Connection connection = data.getConnection();
-        Statement stmt = connection.createStatement();
+        try (Connection conn = data.getConnection()) {
+            Statement stmt = conn.createStatement();
 
-        stmt.executeUpdate("DELETE FROM Viesti WHERE id = " + key + ";");
+            stmt.executeUpdate("DELETE FROM Viesti WHERE id = " + key + ";");
 
-        stmt.close();
-        connection.close();
-
+            stmt.close();
+            conn.close();
+        }
     }
 
     public List<Viesti> keskustelunViestit(Keskustelu keskustelu) throws SQLException {
 
         List<Viesti> list = new ArrayList();
-        Connection conn = data.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("SELECT Keskustelu.id, Viesti.nimimerkki, Viesti.teksti, Viesti.pvm FROM Keskustelu, Viesti WHERE Viesti.keskustelu_id = Keskustelu.id AND Keskustelu.id = ?");
-        stmt.setObject(1, keskustelu.getId());
+        try (Connection conn = data.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT Keskustelu.id, Viesti.nimimerkki, Viesti.teksti, Viesti.pvm FROM Keskustelu, Viesti WHERE Viesti.keskustelu_id = Keskustelu.id AND Keskustelu.id = ?");
+            stmt.setObject(1, keskustelu.getId());
 
-        ResultSet rs = stmt.executeQuery();
+            ResultSet rs = stmt.executeQuery();
 
-        while (rs.next()) {
-            Integer id = rs.getInt("id");
-            String nimimerkki = rs.getString("nimimerkki");
-            String teksti = rs.getString("teksti");
-            String pvm = rs.getString("pvm");
+            while (rs.next()) {
+                Integer id = rs.getInt("id");
+                String nimimerkki = rs.getString("nimimerkki");
+                String teksti = rs.getString("teksti");
+                String pvm = rs.getString("pvm");
 
-            Viesti v = new Viesti(id, teksti, pvm);
+                Viesti v = new Viesti(id, teksti, pvm);
 
-            v.setKayttaja(kaDao.findOne(nimimerkki));
-            v.setKeskustelu(keDao.findOne(id));
+                v.setKayttaja(kaDao.findOne(nimimerkki));
+                v.setKeskustelu(keDao.findOne(id));
 
-            System.out.println(v);
+                System.out.println(v);
 
-            list.add(v);
+                list.add(v);
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            return list;
         }
-
-        rs.close();
-        stmt.close();
-        conn.close();
-
-        return list;
     }
 
     public void lisaaViesti(Viesti v) throws SQLException {
-        Connection connection = data.getConnection();
-        Statement stmt = connection.createStatement();
+        try (Connection conn = data.getConnection()) {
+            Statement stmt = conn.createStatement();
 
-        stmt.executeUpdate("INSERT INTO Viesti (nimimerkki, keskustelu_id, teksti) "
-                + "VALUES ('" + v.getKayttaja().getNimimerkki() + "', "
-                + "" + v.getKeskustelu().getId() + ", "
-                + "'" + v.getTeksti() + "');");
+            stmt.executeUpdate("INSERT INTO Viesti (nimimerkki, keskustelu_id, teksti) "
+                    + "VALUES ('" + v.getKayttaja().getNimimerkki() + "', "
+                    + "" + v.getKeskustelu().getId() + ", "
+                    + "'" + v.getTeksti() + "');");
 
-        stmt.close();
+            stmt.close();
 
-        connection.close();
+            conn.close();
+        }
     }
 }

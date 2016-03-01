@@ -30,90 +30,93 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
 
     @Override
     public Kayttaja findOne(String key) throws SQLException {
-        Connection conn = data.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kayttaja WHERE nimimerkki = ?");
-        stmt.setObject(1, key);
+        try (Connection conn = data.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Kayttaja WHERE nimimerkki = ?");
+            stmt.setObject(1, key);
 
-        ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
+            ResultSet rs = stmt.executeQuery();
+            boolean hasOne = rs.next();
+            if (!hasOne) {
+                return null;
+            }
+
+            String nimimerkki = rs.getString("nimimerkki");
+            String nimi = rs.getString("nimi");
+
+            Kayttaja e = new Kayttaja(nimimerkki, nimi);
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            return e;
         }
-
-        String nimimerkki = rs.getString("nimimerkki");
-        String nimi = rs.getString("nimi");
-
-        Kayttaja e = new Kayttaja(nimimerkki, nimi);
-
-        rs.close();
-        stmt.close();
-        conn.close();
-
-        return e;
-
     }
 
     @Override
     public List<Kayttaja> findAll() throws SQLException {
         List<Kayttaja> list = new ArrayList();
-        Connection conn = data.getConnection();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT nimimerkki FROM Kayttaja;");
+        try (Connection conn = data.getConnection()) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT nimimerkki FROM Kayttaja;");
 
-        while (rs.next()) {
-            String nimimerkki = rs.getString("nimimerkki");
+            while (rs.next()) {
+                String nimimerkki = rs.getString("nimimerkki");
 
-            Kayttaja k = findOne(nimimerkki);
+                Kayttaja k = findOne(nimimerkki);
 
-            list.add(k);
-        }
-
-        rs.close();
-        stmt.close();
-        conn.close();
-
-        return list;
-    }
-
-    @Override
-    public void delete(String key) throws SQLException {
-        Connection connection = data.getConnection();
-        Statement stmt = connection.createStatement();
-
-        stmt.executeUpdate("DELETE FROM Kayttaja WHERE id = " + key + ";");
-
-        stmt.close();
-        connection.close();
-
-    }
-
-    public void lisaaKayttaja(Kayttaja kayttaja) throws SQLException {
-        Connection connection = data.getConnection();
-        Statement stmt = connection.createStatement();
-
-        stmt.executeUpdate("INSERT INTO Kayttaja (nimimerkki, nimi) VALUES ('" + kayttaja.getNimimerkki() + "', '" + kayttaja.getName() + "');");
-        stmt.close();
-
-        connection.close();
-    }
-
-    public boolean onkoTietokannassa(Kayttaja kayttaja) throws SQLException {
-        Connection conn = data.getConnection();
-        PreparedStatement stmt = conn.prepareStatement("SELECT nimimerkki FROM Kayttaja WHERE nimimerkki = ?");
-        stmt.setObject(1, kayttaja.getNimimerkki());
-
-        ResultSet rs = stmt.executeQuery();
-
-        boolean hasOne = rs.next();
-        if (!hasOne) {
+                list.add(k);
+            }
 
             rs.close();
             stmt.close();
             conn.close();
-            
-            return false;
+
+            return list;
         }
-        return true;
+    }
+
+    @Override
+    public void delete(String key) throws SQLException {
+        try (Connection conn = data.getConnection()) {
+            Statement stmt = conn.createStatement();
+
+            stmt.executeUpdate("DELETE FROM Kayttaja WHERE id = " + key + ";");
+
+            stmt.close();
+            conn.close();
+        }
+    }
+
+    public void lisaaKayttaja(Kayttaja kayttaja) throws SQLException {
+        try (Connection conn = data.getConnection()) {
+            Statement stmt = conn.createStatement();
+
+            stmt.executeUpdate("INSERT INTO Kayttaja (nimimerkki, nimi) VALUES ('" + kayttaja.getNimimerkki() + "', '" + kayttaja.getName() + "');");
+            stmt.close();
+
+            conn.close();
+        }
+    }
+
+    public boolean onkoTietokannassa(Kayttaja kayttaja) throws SQLException {
+        try (Connection conn = data.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT nimimerkki FROM Kayttaja WHERE nimimerkki = ?");
+            stmt.setObject(1, kayttaja.getNimimerkki());
+
+            ResultSet rs = stmt.executeQuery();
+
+            boolean hasOne = rs.next();
+            if (!hasOne) {
+
+                rs.close();
+                stmt.close();
+                conn.close();
+
+                return false;
+            }
+            return true;
+        }
     }
 
 }

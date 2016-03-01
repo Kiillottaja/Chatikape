@@ -34,74 +34,78 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
 
     @Override
     public Keskustelu findOne(Integer key) throws SQLException {
-        Connection connection = data.getConnection();
-        PreparedStatement stmt = connection.prepareStatement("SELECT * FROM Keskustelu WHERE id = ?");
-        stmt.setObject(1, key);
+        try (Connection conn = data.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Keskustelu WHERE id = ?");
+            stmt.setObject(1, key);
 
-        ResultSet rs = stmt.executeQuery();
-        boolean hasOne = rs.next();
-        if (!hasOne) {
-            return null;
+            ResultSet rs = stmt.executeQuery();
+            boolean hasOne = rs.next();
+            if (!hasOne) {
+                return null;
+            }
+
+            Integer id = rs.getInt("id");
+            Integer alueId = rs.getInt("alue_id");
+            String otsikko = rs.getString("otsikko");
+
+            Keskustelu k = new Keskustelu(id, otsikko);
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            k.setAlue(aDao.findOne(alueId));
+
+            return k;
         }
-
-        Integer id = rs.getInt("id");
-        Integer alueId = rs.getInt("alue_id");
-        String otsikko = rs.getString("otsikko");
-
-        Keskustelu k = new Keskustelu(id, otsikko);
-
-        rs.close();
-        stmt.close();
-        connection.close();
-
-        k.setAlue(aDao.findOne(alueId));
-
-        return k;
     }
 
     @Override
     public List<Keskustelu> findAll() throws SQLException {
         List<Keskustelu> list = new ArrayList();
-        Connection conn = data.getConnection();
-        Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT id FROM Keskustelu;");
+        try (Connection conn = data.getConnection()) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id FROM Keskustelu;");
 
-        while (rs.next()) {
-            Integer id = rs.getInt("id");
-            Keskustelu k = findOne(id);
+            while (rs.next()) {
+                Integer id = rs.getInt("id");
+                Keskustelu k = findOne(id);
 
-            list.add(k);
+                list.add(k);
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            return list;
         }
-
-        rs.close();
-        stmt.close();
-        conn.close();
-
-        return list;
     }
 
     @Override
     public void delete(Integer key) throws SQLException {
-        Connection connection = data.getConnection();
-        Statement stmt = connection.createStatement();
+        try (Connection conn = data.getConnection()) {
+            Statement stmt = conn.createStatement();
 
-        stmt.executeUpdate("DELETE FROM Keskustelu WHERE id = " + key + ";");
+            stmt.executeUpdate("DELETE FROM Keskustelu WHERE id = " + key + ";");
 
-        stmt.close();
-        connection.close();
+            stmt.close();
+            conn.close();
+        }
     }
 
     public void lisaaKeskustelu(Keskustelu k) throws SQLException {
-        Connection connection = data.getConnection();
-        Statement stmt = connection.createStatement();
+        try (Connection conn = data.getConnection()) {
+            Statement stmt = conn.createStatement();
 
-        stmt.executeUpdate("INSERT INTO Keskustelu (alue_id, otsikko) "
-                + "VALUES (" + k.getAlue().getId() + ", "
-                + "'" + k.getOtsikko() + "');");
+            stmt.executeUpdate("INSERT INTO Keskustelu (alue_id, otsikko) "
+                    + "VALUES (" + k.getAlue().getId() + ", "
+                    + "'" + k.getOtsikko() + "');");
 
-        stmt.close();
+            stmt.close();
 
-        connection.close();
+            conn.close();
+        }
     }
 
 }
