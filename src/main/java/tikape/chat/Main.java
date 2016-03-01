@@ -64,7 +64,7 @@ public class Main {
             String nimimerkki = req.queryParams("nimimerkki");
             String salasana = req.queryParams("salasana");
 
-            Kayttaja kayt = new Kayttaja(nimimerkki);
+            Kayttaja kayt = new Kayttaja(nimimerkki, salasana);
             if (kaDao.onkoTietokannassa(kayt)) {
                 return "Tervetuloa keskustelufoorumille " + nimimerkki;
             }
@@ -80,15 +80,18 @@ public class Main {
 
         post("/chat/luokayttaja", (req, res) -> {
             String nimimerkki = req.queryParams("nimimerkki");
-            String nimi = req.queryParams("nimi");
             String salasana = req.queryParams("salasana");
             String salasana2 = req.queryParams("salasana2");
+            
+            if (kaDao.findOne(nimimerkki) != null) {
+                return "Nimimerkki on jo käytössä";
+            }
 
             if (!salasana.equals(salasana2)) {
                 return "Tarkasta salasanojen vastaavuus";
             }
 
-            Kayttaja kayt = new Kayttaja(nimimerkki, nimi);
+            Kayttaja kayt = new Kayttaja(nimimerkki, salasana);
             if (!kaDao.onkoTietokannassa(kayt)) {
                 kaDao.lisaaKayttaja(kayt);
                 return "Käyttäjä lisätty tietokantaan: " + nimimerkki;

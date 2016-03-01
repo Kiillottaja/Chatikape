@@ -41,9 +41,9 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
             }
 
             String nimimerkki = rs.getString("nimimerkki");
-            String nimi = rs.getString("nimi");
+            String salasana = rs.getString("salasana");
 
-            Kayttaja e = new Kayttaja(nimimerkki, nimi);
+            Kayttaja e = new Kayttaja(nimimerkki, salasana);
 
             rs.close();
             stmt.close();
@@ -81,7 +81,7 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
         try (Connection conn = data.getConnection()) {
             Statement stmt = conn.createStatement();
 
-            stmt.executeUpdate("DELETE FROM Kayttaja WHERE id = " + key + ";");
+            stmt.executeUpdate("DELETE FROM Kayttaja WHERE nimimerkki = '" + key + "';");
 
             stmt.close();
             conn.close();
@@ -92,16 +92,16 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
         try (Connection conn = data.getConnection()) {
             Statement stmt = conn.createStatement();
 
-            stmt.executeUpdate("INSERT INTO Kayttaja (nimimerkki, nimi) VALUES ('" + kayttaja.getNimimerkki() + "', '" + kayttaja.getName() + "');");
+            stmt.executeUpdate("INSERT INTO Kayttaja (nimimerkki, salasana) VALUES ('" + kayttaja.getNimimerkki() + "', '" + kayttaja.getSalasana() + "');");
+          
             stmt.close();
-
             conn.close();
         }
     }
 
     public boolean onkoTietokannassa(Kayttaja kayttaja) throws SQLException {
         try (Connection conn = data.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT nimimerkki FROM Kayttaja WHERE nimimerkki = ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT nimimerkki, salasana FROM Kayttaja WHERE nimimerkki = ?");
             stmt.setObject(1, kayttaja.getNimimerkki());
 
             ResultSet rs = stmt.executeQuery();
@@ -115,6 +115,12 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
 
                 return false;
             }
+            String salasana = rs.getString("salasana");
+            
+            if (!kayttaja.getSalasana().equals(salasana)) {
+                return false;
+            }
+            
             return true;
         }
     }
