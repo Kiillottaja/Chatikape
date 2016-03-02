@@ -16,7 +16,7 @@
             </li>
         </ul>
 
-        <form method="POST" th:action="@{~/chat/{id}/keskustelut(id=${keskustelu})}">
+        <form method="POST" th:action="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}">
             Nimimerkki:<br/>
             <input type="text" name="nimimerkki"/><br/>
             Viesti:<br/>
@@ -24,7 +24,7 @@
             <input type="submit" value="Lähetä"/>
         </form>
 
-        <a href="/chat/alueet">
+        <a th:href="@{~/chat/alueet/{id}(id=${keskustelu.getAlue().getId()})}">
             <span> Takaisin </span>
         </a>
 

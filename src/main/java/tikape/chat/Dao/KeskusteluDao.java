@@ -108,4 +108,31 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
         }
     }
 
+    public Keskustelu haeNimella(String key) throws SQLException {
+        try (Connection conn = data.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Keskustelu WHERE otsikko = ?");
+            stmt.setObject(1, key);
+
+            ResultSet rs = stmt.executeQuery();
+            boolean hasOne = rs.next();
+            if (!hasOne) {
+                return null;
+            }
+
+            Integer id = rs.getInt("id");
+            Integer alueId = rs.getInt("alue_id");
+            String otsikko = rs.getString("otsikko");
+
+            Keskustelu k = new Keskustelu(id, otsikko);
+
+            k.setAlue(aDao.findOne(alueId));
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            return k;
+        }
+    }
+
 }

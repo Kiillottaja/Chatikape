@@ -93,7 +93,7 @@ public class AlueDao implements Dao<Alue, Integer> {
     public List<Keskustelu> alueenKeskustelut(Alue alue) throws SQLException {
         List<Keskustelu> list = new ArrayList();
         try (Connection conn = data.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Alue, Keskustelu WHERE Alue.id = Keskustelu.alue_id AND Alue.id = ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT Keskustelu.id, Keskustelu.otsikko FROM Alue, Keskustelu WHERE Alue.id = Keskustelu.alue_id AND Alue.id = ?");
             stmt.setObject(1, alue.getId());
 
             ResultSet rs = stmt.executeQuery();
@@ -117,14 +117,38 @@ public class AlueDao implements Dao<Alue, Integer> {
         }
     }
 
-    public void lisaaAlue(Alue alue) throws SQLException {
+    public void lisaaAlue(String alue) throws SQLException {
         try (Connection conn = data.getConnection()) {
             Statement stmt = conn.createStatement();
 
-            stmt.executeUpdate("INSERT INTO Alue (nimi) VALUES ('" + alue.getNimi() + "');");
+            stmt.executeUpdate("INSERT INTO Alue (nimi) VALUES ('" + alue + "');");
             stmt.close();
 
             conn.close();
+        }
+    }
+
+    public Alue haeNimella(String key) throws SQLException {
+        try (Connection conn = data.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Alue WHERE nimi = ?");
+            stmt.setObject(1, key);
+
+            ResultSet rs = stmt.executeQuery();
+            boolean hasOne = rs.next();
+            if (!hasOne) {
+                return null;
+            }
+
+            Integer id = rs.getInt("id");
+            String nimi = rs.getString("nimi");
+
+            Alue a = new Alue(id, nimi);
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            return a;
         }
     }
 

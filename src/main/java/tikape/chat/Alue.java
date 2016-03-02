@@ -18,15 +18,23 @@ public class Alue {
         this.id = id;
         this.nimi = nimi;
     }
-    
+
+    public Alue(String nimi) {
+        this.nimi = nimi;
+    }
+
     public void setNimi(String nimi) {
         this.nimi = nimi;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNimi() {
         return nimi;
     }
-    
+
     public Integer getId() {
         return id;
     }

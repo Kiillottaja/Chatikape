@@ -11,15 +11,22 @@
 
         <ul>
             <li th:each="alue: ${alueet}">
-                <a href="/chat/talous">
+                <a th:href="@{~/chat/alueet/{id}(id=${alue.getId()})}">
                     <span th:text="${alue.getNimi()}">aluenimi</span>
                 </a>
             </li>
         </ul>
-        
+
+        <h4> Luo keskustelualue </h4>     
+        <form method="POST" action="/chat/alueet">
+            Alueen nimi:<br/>
+            <input type="text" name="alue"/><br/>
+            <input type="submit" value="Luo"/>
+        </form>
+
         <a href="/chat">
             <span> Kirjaudu ulos </span>
         </a>
-        
+
     </body>
 </html>
