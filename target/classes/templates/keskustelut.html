@@ -8,7 +8,7 @@
 
     <body>
 
-        <h2 th:text="${keskustelu.getOtsikko()}">testi</h2>
+        <h3 th:text="${keskustelu}">testi</h3>
 
         <ul>
             <li th:each="viesti: ${viestit}">
@@ -23,6 +23,10 @@
             <input type="text" name="viesti" size="160"/><br/>
             <input type="submit" value="Lähetä"/>
         </form>
+
+        <a href="/chat/alueet">
+            <span> Takaisin </span>
+        </a>
 
     </body>
 </html>

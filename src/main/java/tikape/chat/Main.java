@@ -66,9 +66,13 @@ public class Main {
 
             Kayttaja kayt = new Kayttaja(nimimerkki, salasana);
             if (kaDao.onkoTietokannassa(kayt)) {
+                res.redirect("chat/alueet");
                 return "Tervetuloa keskustelufoorumille " + nimimerkki;
             }
-            return "Käyttäjätunnus tai salasana eivät täsmää";
+
+            HashMap map = new HashMap<>();
+
+            return "Käyttäjätunnus tai salasana eivät täsmää" + new ModelAndView(map, "index");
         });
 
         get("/chat/luokayttaja", (req, res) -> {
@@ -94,8 +98,10 @@ public class Main {
             Kayttaja kayt = new Kayttaja(nimimerkki, salasana);
             if (!kaDao.onkoTietokannassa(kayt)) {
                 kaDao.lisaaKayttaja(kayt);
+                res.redirect("/chat/alueet");
                 return "Käyttäjä lisätty tietokantaan: " + nimimerkki;
             }
+            res.redirect("/chat/alueet");
             return "Sinulla on jo käyttäjätunnus. Tervetuloa keskustelufoorumille " + kayt.getNimimerkki();
         });
 
@@ -110,7 +116,6 @@ public class Main {
         get("/chat/talous", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("keskustelut", aDao.alueenKeskustelut(aDao.findOne(1)));
-            map.put("viestit", vDao.keskustelunViestit(keDao.findOne(1)));
 
             return new ModelAndView(map, "talous");
         }, new ThymeleafTemplateEngine());
@@ -126,32 +131,35 @@ public class Main {
         get("/keskustelut/:id", (req, res) -> {
             HashMap map = new HashMap<>();
 
-            map.put("keskustelu", keDao.findOne(Integer.parseInt(req.params("id"))));
+            String otsikko = "Alue: " + keDao.findOne(Integer.parseInt(req.params("id"))).getOtsikko() + " -> " + keDao.findOne(Integer.parseInt(req.params("id"))).getOtsikko();
+            
+            map.put("keskustelu", otsikko);
             map.put("viestit", vDao.keskustelunViestit(keDao.findOne(Integer.parseInt(req.params("id")))));
 
             return new ModelAndView(map, "keskustelut");
         }, new ThymeleafTemplateEngine());
 
         post("/keskustelut/:id", (req, res) -> {
+
             String nimimerkki = req.queryParams("nimimerkki");
             String viesti = req.queryParams("viesti");
 
             if (kaDao.findOne(nimimerkki) == null) {
                 return "Nimimerkkiä ei löydy";
             }
-            
+
             if (viesti.length() > 160) {
                 return "Viesti liian pitkä!";
             }
-            
+
             Viesti v = new Viesti(viesti);
             v.setKayttaja(kaDao.findOne("nimimerkki"));
             v.setKeskustelu(keDao.findOne(Integer.parseInt(req.params("id"))));
-            
+
             vDao.lisaaViesti(v);
-            
+
             return "Viesti vastaanotettu";
         });
-        
+
     }
 }
