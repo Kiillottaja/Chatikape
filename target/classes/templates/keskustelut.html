@@ -19,7 +19,7 @@
         <form method="POST" th:action="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}">
             Nimimerkki:<br/>
             <input type="text" name="nimimerkki"/><br/>
-            Viesti:<br/>
+            Viesti (max 160 merkkiä):<br/>
             <input type="text" name="viesti" size="160"/><br/>
             <input type="submit" value="Lähetä"/>
         </form>
