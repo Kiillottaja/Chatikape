@@ -1,0 +1,28 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Otsikko</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+
+        <h2 th:text="${keskustelu.getOtsikko()}">testi</h2>
+
+        <ul>
+            <li th:each="viesti: ${viestit}">
+                <span th:text="${viesti.toString()}"> viesti </span>
+            </li>
+        </ul>
+
+        <form method="POST" action="/keskustelut/:id">
+            Nimimerkki:<br/>
+            <input type="text" name="nimimerkki"/><br/>
+            Viesti:<br/>
+            <input type="text" name="viesti" size="160"/><br/>
+            <input type="submit" value="Lähetä"/>
+        </form>
+
+    </body>
+</html>
