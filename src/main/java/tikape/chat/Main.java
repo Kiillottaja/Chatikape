@@ -41,8 +41,9 @@ public class Main {
         // käytetään oletuksena paikallista sqlite-tietokantaa
         String jdbcOsoite = "jdbc:sqlite:chatti.db";
         // jos heroku antaa käyttöömme tietokantaosoitteen, otetaan se käyttöön
-        if (System.getenv("DATABASE_URL") != null) {
-            jdbcOsoite = System.getenv("DATABASE_URL");
+        String DATABASE_URL = "postgres://odsinyrmznhzpm:-qSPdAXiwLpH5b78md6tVxOHJI@ec2-54-227-250-148.compute-1.amazonaws.com:5432/d68iqmmfd20f60";
+        if (System.getenv(DATABASE_URL) != null) {
+            jdbcOsoite = System.getenv(DATABASE_URL);
         }
 
         Database data = new Database(jdbcOsoite);
