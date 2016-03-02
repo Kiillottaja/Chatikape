@@ -33,6 +33,10 @@ public class Viesti {
         this.pvm = pvm;
     }
 
+    public Viesti(String teksti) {
+        this.teksti = teksti;
+    }
+
     public int getId() {
         return id;
     }
@@ -48,7 +52,7 @@ public class Viesti {
     public Kayttaja getKayttaja() {
         return kayttaja;
     }
-    
+
     public Keskustelu getKeskustelu() {
         return keskustelu;
     }
@@ -56,15 +60,15 @@ public class Viesti {
     public void setKayttaja(Kayttaja kayttaja) {
         this.kayttaja = kayttaja;
     }
-    
+
     public void setKeskustelu(Keskustelu keskustelu) {
         this.keskustelu = keskustelu;
     }
-    
+
     public void setPvm(String time) {
         this.pvm = time;
     }
-    
+
     @Override
     public String toString() {
         return "<" + pvm + "> " + kayttaja + ": " + teksti;

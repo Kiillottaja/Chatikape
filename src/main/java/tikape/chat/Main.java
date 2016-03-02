@@ -30,7 +30,7 @@ public class Main {
      */
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
-        
+
         // asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
         if (System.getenv("PORT") != null) {
             port(Integer.valueOf(System.getenv("PORT")));
@@ -82,7 +82,7 @@ public class Main {
             String nimimerkki = req.queryParams("nimimerkki");
             String salasana = req.queryParams("salasana");
             String salasana2 = req.queryParams("salasana2");
-            
+
             if (kaDao.findOne(nimimerkki) != null) {
                 return "Nimimerkki on jo käytössä";
             }
@@ -122,5 +122,36 @@ public class Main {
 
             return new ModelAndView(map, "kemia");
         }, new ThymeleafTemplateEngine());
+
+        get("/keskustelut/:id", (req, res) -> {
+            HashMap map = new HashMap<>();
+
+            map.put("keskustelu", keDao.findOne(Integer.parseInt(req.params("id"))));
+            map.put("viestit", vDao.keskustelunViestit(keDao.findOne(Integer.parseInt(req.params("id")))));
+
+            return new ModelAndView(map, "keskustelut");
+        }, new ThymeleafTemplateEngine());
+
+        post("/keskustelut/:id", (req, res) -> {
+            String nimimerkki = req.queryParams("nimimerkki");
+            String viesti = req.queryParams("viesti");
+
+            if (kaDao.findOne(nimimerkki) == null) {
+                return "Nimimerkkiä ei löydy";
+            }
+            
+            if (viesti.length() > 160) {
+                return "Viesti liian pitkä!";
+            }
+            
+            Viesti v = new Viesti(viesti);
+            v.setKayttaja(kaDao.findOne("nimimerkki"));
+            v.setKeskustelu(keDao.findOne(Integer.parseInt(req.params("id"))));
+            
+            vDao.lisaaViesti(v);
+            
+            return "Viesti vastaanotettu";
+        });
+        
     }
 }
