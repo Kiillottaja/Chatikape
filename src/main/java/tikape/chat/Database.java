@@ -71,10 +71,10 @@ public class Database {
         ArrayList<String> lista = new ArrayList<>();
 
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
-//        lista.add("DROP TABLE Kayttaja;");
-//        lista.add("DROP TABLE Viesti;");
-//        lista.add("DROP TABLE Keskustelu;");
-//        lista.add("DROP TABLE Alue;");
+        lista.add("DROP TABLE Kayttaja;");
+        lista.add("DROP TABLE Viesti;");
+        lista.add("DROP TABLE Keskustelu;");
+        lista.add("DROP TABLE Alue;");
 
         // heroku käyttää SERIAL-avainsanaa uuden tunnuksen automaattiseen luomiseen
         lista.add("CREATE TABLE Kayttaja(nimimerkki VARCHAR(50) PRIMARY KEY, salasana VARCHAR(20) NOT NULL, CONSTRAINT Tarkastus CHECK (LENGTH(nimimerkki) > 2 AND LENGTH(salasana > 2)));");

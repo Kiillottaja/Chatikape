@@ -8,7 +8,7 @@
 
     <body>
 
-        <h3 th:text="${keskustelu}">testi</h3>
+        <h3 th:text="${otsikko}">testi</h3>
 
         <ul>
             <li th:each="viesti: ${viestit}">
@@ -16,7 +16,7 @@
             </li>
         </ul>
 
-        <form method="POST" action="/keskustelut/:id">
+        <form method="POST" th:action="@{~/chat/{id}/keskustelut(id=${keskustelu})}">
             Nimimerkki:<br/>
             <input type="text" name="nimimerkki"/><br/>
             Viesti:<br/>

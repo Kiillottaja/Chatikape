@@ -43,15 +43,13 @@ public class Main {
             jdbcOsoite = System.getenv("DATABASE_URL");
         }
 
-        Database db = new Database(jdbcOsoite);
-
         Database data = new Database(jdbcOsoite);
         data.setDebugMode(true);
 
         KayttajaDao kaDao = new KayttajaDao(data);
         AlueDao aDao = new AlueDao(data);
         KeskusteluDao keDao = new KeskusteluDao(data, aDao);
-        ViestiDao vDao = new ViestiDao(data, kaDao, keDao);
+        ViestiDao vDao = new ViestiDao(data, kaDao, keDao);      
 
         get("/chat", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -128,22 +126,23 @@ public class Main {
             return new ModelAndView(map, "kemia");
         }, new ThymeleafTemplateEngine());
 
-        get("/keskustelut/:id", (req, res) -> {
+        get("/chat/:id/keskustelut", (req, res) -> {
             HashMap map = new HashMap<>();
 
-            String otsikko = "Alue: " + keDao.findOne(Integer.parseInt(req.params("id"))).getOtsikko() + " -> " + keDao.findOne(Integer.parseInt(req.params("id"))).getOtsikko();
-            
-            map.put("keskustelu", otsikko);
+            String otsikko = "Alue: " + aDao.findOne(Integer.parseInt(req.params("id"))).getNimi() + " -> " + keDao.findOne(Integer.parseInt(req.params("id"))).getOtsikko();
+
+            map.put("otsikko", otsikko);
+            map.put("keskustelu", keDao.findOne(Integer.parseInt(req.params("id"))).getId());
             map.put("viestit", vDao.keskustelunViestit(keDao.findOne(Integer.parseInt(req.params("id")))));
 
             return new ModelAndView(map, "keskustelut");
         }, new ThymeleafTemplateEngine());
 
-        post("/keskustelut/:id", (req, res) -> {
+        post("/chat/:id/keskustelut", (req, res) -> {
 
             String nimimerkki = req.queryParams("nimimerkki");
             String viesti = req.queryParams("viesti");
-
+            
             if (kaDao.findOne(nimimerkki) == null) {
                 return "Nimimerkkiä ei löydy";
             }
@@ -151,13 +150,14 @@ public class Main {
             if (viesti.length() > 160) {
                 return "Viesti liian pitkä!";
             }
-
+            int id = Integer.parseInt(req.params("id"));
             Viesti v = new Viesti(viesti);
-            v.setKayttaja(kaDao.findOne("nimimerkki"));
-            v.setKeskustelu(keDao.findOne(Integer.parseInt(req.params("id"))));
-
+            v.setKayttaja(kaDao.findOne(nimimerkki));
+            v.setKeskustelu(keDao.findOne(id));
+            
             vDao.lisaaViesti(v);
-
+            
+            res.redirect("/chat/" + id + "/keskustelut");
             return "Viesti vastaanotettu";
         });
 

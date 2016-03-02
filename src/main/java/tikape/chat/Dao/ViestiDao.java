@@ -133,13 +133,9 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         try (Connection conn = data.getConnection()) {
             Statement stmt = conn.createStatement();
 
-            stmt.executeUpdate("INSERT INTO Viesti (nimimerkki, keskustelu_id, teksti) "
-                    + "VALUES ('" + v.getKayttaja().getNimimerkki() + "', "
-                    + "" + v.getKeskustelu().getId() + ", "
-                    + "'" + v.getTeksti() + "');");
+            stmt.executeUpdate("INSERT INTO Viesti(nimimerkki, keskustelu_id, teksti) VALUES('" + v.getKayttaja().getNimimerkki() + "', " + v.getKeskustelu().getId() + ", '" + v.getTeksti() + "');");
 
             stmt.close();
-
             conn.close();
         }
     }
