@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  */
 public class Viesti {
 
-    //id integer PRIMARY KEY,
+//id integer PRIMARY KEY,
 //nimimerkki VARCHAR(50),
 //keskustelu_id integer,
 //teksti VARCHAR(160) NOT NULL,
