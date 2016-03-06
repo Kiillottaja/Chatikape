@@ -2,31 +2,43 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Otsikko</title>
+        <title>Chatikape-alueet</title>
         <meta charset="utf-8" />
     </head>
 
-    <body>
-        <h2 th:text="${teksti}">testi</h2>
+    <body bgcolor="#E6E6FA">
 
-        <ul>
-            <li th:each="alue: ${alueet}">
-                <a th:href="@{~/chat/alueet/{id}(id=${alue.getId()})}">
-                    <span th:text="${alue.getNimi()}">aluenimi</span>
-                </a>
-            </li>
-        </ul>
-
-        <h4> Luo keskustelualue </h4>     
-        <form method="POST" action="/chat/alueet">
-            Alueen nimi:<br/>
-            <input type="text" name="alue"/><br/>
-            <input type="submit" value="Luo"/>
+        <form method="post">
+            <fieldset>
+                <legend> <th:text="${teksti}">testi </legend> 
+                <!--<textarea name=keskustelualueet rows="20" cols="150" wrap="Virtual"></textarea>-->
+                <li th:each="alue: ${alueet}">
+                    <a th:href="@{~/chat/alueet/{id}(id=${alue.getId()})}">
+                        <span th:text="${alue.getNimi()}">aluenimi</span>
+                    </a>
+                </li>
+            </fieldset>
         </form>
 
-        <a href="/chat">
-            <span> Kirjaudu ulos </span>
-        </a>
+        <br/>
+
+        <form method="POST" action="/chat/alueet">
+            <fieldset>
+                <legend> Luo keskustelualue </legend>
+                <br/>
+                Alueen nimi:
+                <br/>
+                <input type="text" name="alue"/>
+                <br/>
+                <br/>
+                <input type="submit" value="Luo"/>
+                <br/>
+            </fieldset>
+            <br/>
+            <fieldset>
+                <input name="logout" type="button" onclick="location.href = '/chat'" value="Kirjaudu ulos"/>
+            </fieldset>
+        </form>
 
     </body>
 </html>
