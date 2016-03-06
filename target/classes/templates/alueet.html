@@ -12,11 +12,13 @@
             <fieldset>
                 <legend> <th:text="${teksti}">testi </legend> 
                 <!--<textarea name=keskustelualueet rows="20" cols="150" wrap="Virtual"></textarea>-->
-                <li th:each="alue: ${alueet}">
-                    <a th:href="@{~/chat/alueet/{id}(id=${alue.getId()})}">
-                        <span th:text="${alue.getNimi()}">aluenimi</span>
-                    </a>
-                </li>
+                <ul>
+                    <li th:each="alue: ${alueet}">
+                        <a th:href="@{~/chat/alueet/{id}(id=${alue.getId()})}">
+                            <span th:text="${alue.getNimi()}">aluenimi</span>
+                        </a>
+                    </li>
+                </ul>
             </fieldset>
         </form>
 
