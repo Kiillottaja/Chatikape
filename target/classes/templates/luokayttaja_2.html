@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Chatikape-rekisteröidy</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body bgcolor="#E6E6FA">
+        <h3>Luo uusi käyttäjätunnus</h3>
+            <fieldset>
+                <form method="POST" action="/chat/luokayttaja">
+                    
+                <legend> Rekisteröidy foorumille </legend>
+                <br>
+                Nimimerkki:
+                <br>
+                    <input type="text" name="nimimerkki" value=""/>
+                <br>
+                Salasana:
+                <br>
+                <input type="password" name="salasana" value ="">
+                <br>
+                Salasana uudelleen:
+                <br>
+                <input type="password" name="salasana2" value ="">
+                <br>
+                <br>
+
+                <input name="save" type="submit" Value="Tallenna">
+                <input name="deleteAll" type="reset" Value="Tyhjennä">
+                <input name="return" type="button" onclick="location.href='/chat'" value="Takaisin">
+                </form>
+            </fieldset>
+    </body>
+</html>
