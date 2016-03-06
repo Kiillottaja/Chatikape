@@ -73,7 +73,7 @@ public class Main {
 
             HashMap map = new HashMap<>();
 
-            return "Käyttäjätunnus tai salasana eivät täsmää" + new ModelAndView(map, "index");
+            return "Käyttäjätunnus tai salasana eivät täsmää " + new ModelAndView(map, "index");
         });
 
         get("/chat/luokayttaja", (req, res) -> {

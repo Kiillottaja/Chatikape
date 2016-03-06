@@ -1,0 +1,54 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Chatikape-keskustelu</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body bgcolor="#E6E6FA">
+
+        <h3 th:text="${otsikko}">testi</h3>
+
+        <form method="post">
+            <fieldset>
+                <ul>
+                    <li th:each="viesti: ${viestit}">
+                        <span th:text="${viesti.toString()}"> viesti </span>
+                    </li>
+                </ul>
+            </fieldset>
+        </form>
+
+
+
+        <form method="POST" th:action="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}">
+            Nimimerkki:<br/>
+            <input type="text" name="nimimerkki"/><br/>
+            Viesti (max 160 merkkiä):<br/>
+            <input type="text" name="viesti" size="160"/><br/>
+            <input type="submit" value="Lähetä"/>
+        </form>
+
+        <a th:href="@{~/chat/alueet/{id}(id=${keskustelu.getAlue().getId()})}">
+            <span> Takaisin </span>
+        </a>
+
+    </body>
+</html>
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                </head>
+                <body>
+                    <div>TODO write content</div>
+                </body>
+                </html>
