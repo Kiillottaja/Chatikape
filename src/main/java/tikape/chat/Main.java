@@ -76,10 +76,10 @@ public class Main {
             return "Käyttäjätunnus tai salasana eivät täsmää" + new ModelAndView(map, "index");
         });
 
-        get("/chat/luokayttaja2", (req, res) -> {
+        get("/chat/luokayttaja", (req, res) -> {
             HashMap map = new HashMap<>();
 
-            return new ModelAndView(map, "luokayttaja2");
+            return new ModelAndView(map, "luokayttaja");
 
         }, new ThymeleafTemplateEngine());
 
