@@ -21,14 +21,17 @@
                 </ul>
             </fieldset>
         </form>
+        
         <br/>
-        <form method="POST" ath:action="@{~/chat/aiheet/{id}(id=${aihe.getId()})}">
+        
+        <form method="post" ath:action="@{~/chat/aiheet/{id}(id=${aihe.getId()})}">
             <fieldset>
                 <legend> Luo keskustelu </legend>
                 <br/>
                 Keskustelun otsikko:
                 <br/>
                 <input type="text" name="otsikko"/>
+                <br/>
                 <br/>
                 <input type="submit" value="Luo"/>
             </fieldset>
