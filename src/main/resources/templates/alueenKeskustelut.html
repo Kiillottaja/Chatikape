@@ -9,8 +9,7 @@
     <body bgcolor="#E6E6FA">
 
         <h3 th:text="${otsikko}">testi</h3>
-
-        <form method="post" ath:action="@{~/chat/aiheet/{id}(id=${aihe.getId()})}">
+        <form>
             <fieldset>
                 <legend> Keskustelut </legend>
                 <ul>
@@ -19,7 +18,12 @@
                     </li>
                 </ul>
             </fieldset>
-            <br/>
+        </form>
+        
+        <br/>
+        
+        <form method="post" ath:action="@{~/chat/aiheet/{id}(id=${aihe.getId()})}">
+
             <fieldset>
                 <legend> Luo keskustelu </legend>
                 <br/>
@@ -31,6 +35,11 @@
                 <input type="submit" value="Luo"/>
             </fieldset>
             <br/>
+        </form>
+        
+        <br/>
+        
+        <form>
             <fieldset>
                 <input name="logout" type="button" onclick="location.href = '/chat/alueet'" value="Takaisin"/>
             </fieldset>
