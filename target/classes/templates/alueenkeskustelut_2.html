@@ -13,11 +13,21 @@
 
             <h3 th:text="${otsikko}">testi</h3>
 
-            <ul>
-                <li th:each="keskustelu: ${keskustelut}">
-                    <a th:href="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}" th:text="${keskustelu.getOtsikko()}"> otsikko</a>
-                </li>
-            </ul>
+            <form>
+                <fieldset>
+                    <legend> Keskustelut </legend>
+                    <br/>
+                    <ul>
+                        <li th:each="keskustelu: ${keskustelut}">
+                            <a th:href="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}" th:text="${keskustelu.getOtsikko()}"> otsikko</a>
+                        </li>
+                    </ul>
+                    <br/>
+                </fieldset>
+
+            </form>
+            
+            <br/>
 
             <form method="POST" ath:action="@{~/chat/aiheet/{id}(id=${aihe.getId()})}">
                 <fieldset>

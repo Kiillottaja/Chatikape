@@ -137,7 +137,7 @@ public class Main {
             map.put("aihe", aDao.findOne(id));
             map.put("keskustelut", aDao.alueenKeskustelut(aDao.findOne(id)));
 
-            return new ModelAndView(map, "alueenkeskustelut");
+            return new ModelAndView(map, "alueenKeskustelut");
         }, new ThymeleafTemplateEngine());
 
         post("/chat/alueet/:id", (req, res) -> {
