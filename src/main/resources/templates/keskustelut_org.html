@@ -1,0 +1,32 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Otsikko</title>
+        <meta charset="utf-8" />
+    </head>
+
+    <body>
+
+        <h3 th:text="${otsikko}">testi</h3>
+
+        <ul>
+            <li th:each="viesti: ${viestit}">
+                <span th:text="${viesti.toString()}"> viesti </span>
+            </li>
+        </ul>
+
+        <form method="POST" th:action="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}">
+            Nimimerkki:<br/>
+            <input type="text" name="nimimerkki"/><br/>
+            Viesti (max 160 merkkiä):<br/>
+            <input type="text" name="viesti" size="160"/><br/>
+            <input type="submit" value="Lähetä"/>
+        </form>
+
+        <a th:href="@{~/chat/alueet/{id}(id=${keskustelu.getAlue().getId()})}">
+            <span> Takaisin </span>
+        </a>
+
+    </body>
+</html>
