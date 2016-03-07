@@ -20,6 +20,7 @@ public class Viesti {
 //pvm TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 //FOREIGN KEY (nimimerkki) REFERENCES Kayttaja (nimimerkki),
 //FOREIGN KEY (keskustelu_id) REFERENCES Keskustelu (id)
+//FOREIGN KEY (alue_id) REFERENCES Alue (id)
 //);
     private int id;
     private String teksti;

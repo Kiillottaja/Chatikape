@@ -47,6 +47,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             Integer id = rs.getInt("id");
             String nimimerkki = rs.getString("nimimerkki");
             Integer keskusteluId = rs.getInt("keskustelu_id");
+            Integer alueId = rs.getInt("alue_id");
             String teksti = rs.getString("teksti");
             String time = rs.getString("pvm");
 
@@ -135,7 +136,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         try (Connection conn = data.getConnection()) {
             Statement stmt = conn.createStatement();
 
-            stmt.executeUpdate("INSERT INTO Viesti(nimimerkki, keskustelu_id, teksti) VALUES('" + v.getKayttaja().getNimimerkki() + "', " + v.getKeskustelu().getId() + ", '" + v.getTeksti() + "');");
+            stmt.executeUpdate("INSERT INTO Viesti(nimimerkki, keskustelu_id,alue_id, teksti) VALUES('" + v.getKayttaja().getNimimerkki() + "', " + v.getKeskustelu().getId() + ", " + v.getAlue() + ", '" + v.getTeksti() + "');");
 
             stmt.close();
             conn.close();
@@ -146,15 +147,15 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         List<AlueenKoonti> list = new ArrayList();
         try (Connection conn = data.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT a.nimi keskustelualue, COUNT(ke.id) viesteja, MAX(v.pvm) viimeisin FROM Alue a, Keskustelu ke, Viesti v WHERE v.keskustelu_id=ke.id AND v.alue_id=a.id Group BY a.nimi;");
+            PreparedStatement stmt = conn.prepareStatement("SELECT a.nimi, COUNT(ke.id), MAX(v.pvm) FROM Alue a, Keskustelu ke, Viesti v WHERE v.keskustelu_id=ke.id AND v.alue_id=a.id Group BY a.nimi;");
 
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                String keskustelu = rs.getString("keskustelualue");
-                Integer viesteja = rs.getInt("viesteja");
-                String viimeisin = rs.getString("viimeisin");
-                
+                String keskustelu = rs.getString("a.nimi");
+                Integer viesteja = rs.getInt("COUNT(ke.id");
+                String viimeisin = rs.getString("MAX(v.pvm)");
+
                 AlueenKoonti ak = new AlueenKoonti(keskustelu, viesteja, viimeisin);
 
                 System.out.println(ak);
