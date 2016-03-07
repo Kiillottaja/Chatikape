@@ -52,7 +52,7 @@ public class Main {
         KayttajaDao kaDao = new KayttajaDao(data);
         AlueDao aDao = new AlueDao(data);
         KeskusteluDao keDao = new KeskusteluDao(data, aDao);
-        ViestiDao vDao = new ViestiDao(data, kaDao, keDao);
+        ViestiDao vDao = new ViestiDao(data, kaDao, keDao, aDao);
 
         get("/chat", (req, res) -> {
             HashMap map = new HashMap<>();

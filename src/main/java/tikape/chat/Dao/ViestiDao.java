@@ -23,11 +23,13 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     private Database data;
     private Dao<Kayttaja, String> kaDao;
     private Dao<Keskustelu, Integer> keDao;
+    private Dao<Alue, Integer> aDao;
 
-    public ViestiDao(Database data, Dao<Kayttaja, String> kaDao, Dao<Keskustelu, Integer> keDao) {
+    public ViestiDao(Database data, Dao<Kayttaja, String> kaDao, Dao<Keskustelu, Integer> keDao, Dao<Alue, Integer> aDao) {
         this.data = data;
         this.kaDao = kaDao;
         this.keDao = keDao;
+        this.aDao = aDao;
     }
 
     @Override
@@ -139,4 +141,38 @@ public class ViestiDao implements Dao<Viesti, Integer> {
             conn.close();
         }
     }
+
+//    public List<Viesti> alueViestitYhteensaViimeisinViesti(Alue alue) throws SQLException {
+//
+//        List<Viesti> list = new ArrayList();
+//        try (Connection conn = data.getConnection()) {
+//            PreparedStatement stmt = conn.prepareStatement("SELECT a.nimi Keskustelualue, COUNT(ke.id) Viestejä, MAX(v.pvm) Viimeisin FROM Alue a, Keskustelu ke, Viesti v WHERE v.keskustelu_id=ke.id AND v.alue_id=a.id Group BY a.nimi;");
+//            stmt.setObject(1, keskustelu.getId());
+//
+//            ResultSet rs = stmt.executeQuery();
+//
+//            while (rs.next()) {
+//                Integer id = rs.getInt("id");
+//                String nimimerkki = rs.getString("nimimerkki");
+//                String teksti = rs.getString("teksti");
+//                String pvm = rs.getString("pvm");
+//
+//                Viesti v = new Viesti(id, teksti, pvm);
+//
+//                v.setKayttaja(kaDao.findOne(nimimerkki));
+//                v.setKeskustelu(keDao.findOne(id));
+//
+//                System.out.println(v);
+//
+//                list.add(v);
+//            }
+//
+//            rs.close();
+//            stmt.close();
+//            conn.close();
+//
+//            return list;
+//        }
+//    }
+
 }

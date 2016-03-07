@@ -9,7 +9,7 @@
     <body bgcolor="#E6E6FA">
 
         <h2> Tervetuloa foorumille </h2>
-        
+
         <form method="post">
             <fieldset>
                 <legend th:text="${teksti}"> testi </legend> 
@@ -40,7 +40,9 @@
             </fieldset>
             <br/>
             <fieldset>
-                <input name="logout" type="button" onclick="location.href = '/chat'" value="Kirjaudu ulos"/>
+                <a href="/chat">
+                    <span> Kirjaudu ulos </span>
+                </a>
             </fieldset>
         </form>
 

@@ -26,6 +26,7 @@ public class Viesti {
     private String pvm;
     private Kayttaja kayttaja;
     private Keskustelu keskustelu;
+    private Alue alue;
 
     public Viesti(Integer id, String teksti, String pvm) {
         this.id = id;
@@ -67,6 +68,14 @@ public class Viesti {
 
     public void setPvm(String time) {
         this.pvm = time;
+    }
+
+    public Alue getAlue() {
+        return alue;
+    }
+
+    public void setAlue(Alue alue) {
+        this.alue = alue;
     }
 
     @Override
