@@ -147,14 +147,14 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         List<AlueenKoonti> list = new ArrayList();
         try (Connection conn = data.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT a.nimi, COUNT(ke.id), MAX(v.pvm) FROM Alue a, Keskustelu ke, Viesti v WHERE v.keskustelu_id=ke.id AND v.alue_id=a.id Group BY a.nimi;");
+            PreparedStatement stmt = conn.prepareStatement("SELECT a.nimi AS nimi, COUNT(ke.id) AS maara, MAX(v.pvm) AS max FROM Alue a, Keskustelu ke, Viesti v WHERE v.keskustelu_id=ke.id AND v.alue_id=a.id Group BY a.nimi;");
 
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                String keskustelu = rs.getString("a.nimi");
-                Integer viesteja = rs.getInt("COUNT(ke.id");
-                String viimeisin = rs.getString("MAX(v.pvm)");
+                String keskustelu = rs.getString("nimi");
+                Integer viesteja = rs.getInt("maara");
+                String viimeisin = rs.getString("max");
 
                 AlueenKoonti ak = new AlueenKoonti(keskustelu, viesteja, viimeisin);
 

@@ -46,7 +46,7 @@ public class AlueenKoonti {
 
     @Override
     public String toString() {
-        return this.alue + " " + this.viesteja + " " + this.viimeisin;
+        return this.alue + "\t" + this.viesteja + "\t" + this.viimeisin;
     }
     
     

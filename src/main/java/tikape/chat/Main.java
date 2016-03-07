@@ -18,6 +18,7 @@ import spark.ModelAndView;
 import static spark.Spark.*;
 import spark.template.thymeleaf.ThymeleafTemplateEngine;
 import tikape.chat.Dao.*;
+import tikape.*;
 
 /**
  *
@@ -53,7 +54,7 @@ public class Main {
         AlueDao aDao = new AlueDao(data);
         KeskusteluDao keDao = new KeskusteluDao(data, aDao);
         ViestiDao vDao = new ViestiDao(data, kaDao, keDao, aDao);
-
+        
         get("/chat", (req, res) -> {
             HashMap map = new HashMap<>();
 
@@ -106,30 +107,12 @@ public class Main {
             return "Sinulla on jo käyttäjätunnus. Tervetuloa keskustelufoorumille " + kayt.getNimimerkki();
         });
 
-//        get("/chat/alueet", (req, res) -> {
-//            HashMap map = new HashMap<>();
-//            map.put("teksti", "Keskustelualueet");
-//            map.put("alueet", vDao.alueViestitYhteensaViimeisinViesti());
-//
-//            return new ModelAndView(map, "alueet");
-//        }, new ThymeleafTemplateEngine());
-//
-//        post("/chat/alueet", (req, res) -> {
-//            String alue = req.queryParams("alue");
-//
-//            if (aDao.haeNimella(alue) != null) {
-//                return "Alue on jo olemassa";
-//            }
-//
-//            aDao.lisaaAlue(alue);
-//
-//            res.redirect("/chat/alueet");
-//            return "Lisätty";
-//        });
         get("/chat/alueet", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("teksti", "Keskustelualueet");
-            map.put("alueet", aDao.findAll());
+            map.put("alueet", vDao.alueViestitYhteensaViimeisinViesti());
+            String otsikot = "Nimi \t Viestien määrä \t Viimeisin viesti";
+            map.put("otsikot", otsikot);
 
             return new ModelAndView(map, "alueet");
         }, new ThymeleafTemplateEngine());
@@ -146,6 +129,27 @@ public class Main {
             res.redirect("/chat/alueet");
             return "Lisätty";
         });
+        
+//        get("/chat/alueet", (req, res) -> {
+//            HashMap map = new HashMap<>();
+//            map.put("teksti", "Keskustelualueet");
+//            map.put("alueet", aDao.findAll());
+//
+//            return new ModelAndView(map, "alueet");
+//        }, new ThymeleafTemplateEngine());
+//
+//        post("/chat/alueet", (req, res) -> {
+//            String alue = req.queryParams("alue");
+//
+//            if (aDao.haeNimella(alue) != null) {
+//                return "Alue on jo olemassa";
+//            }
+//
+//            aDao.lisaaAlue(alue);
+//
+//            res.redirect("/chat/alueet");
+//            return "Lisätty";
+//        });
 
         get("/chat/alueet/:id", (req, res) -> {
             HashMap map = new HashMap<>();
