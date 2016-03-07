@@ -16,13 +16,11 @@
             <form>
                 <fieldset>
                     <legend> Keskustelut </legend>
-                    <br/>
                     <ul>
                         <li th:each="keskustelu: ${keskustelut}">
                             <a th:href="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}" th:text="${keskustelu.getOtsikko()}"> otsikko</a>
                         </li>
                     </ul>
-                    <br/>
                 </fieldset>
 
             </form>
