@@ -106,10 +106,30 @@ public class Main {
             return "Sinulla on jo käyttäjätunnus. Tervetuloa keskustelufoorumille " + kayt.getNimimerkki();
         });
 
+//        get("/chat/alueet", (req, res) -> {
+//            HashMap map = new HashMap<>();
+//            map.put("teksti", "Keskustelualueet");
+//            map.put("alueet", vDao.alueViestitYhteensaViimeisinViesti());
+//
+//            return new ModelAndView(map, "alueet");
+//        }, new ThymeleafTemplateEngine());
+//
+//        post("/chat/alueet", (req, res) -> {
+//            String alue = req.queryParams("alue");
+//
+//            if (aDao.haeNimella(alue) != null) {
+//                return "Alue on jo olemassa";
+//            }
+//
+//            aDao.lisaaAlue(alue);
+//
+//            res.redirect("/chat/alueet");
+//            return "Lisätty";
+//        });
         get("/chat/alueet", (req, res) -> {
             HashMap map = new HashMap<>();
             map.put("teksti", "Keskustelualueet");
-            map.put("alueet", vDao.alueViestitYhteensaViimeisinViesti());
+            map.put("alueet", aDao.findAll());
 
             return new ModelAndView(map, "alueet");
         }, new ThymeleafTemplateEngine());
@@ -127,26 +147,6 @@ public class Main {
             return "Lisätty";
         });
 
-//        get("/chat/alueet", (req, res) -> {
-//            HashMap map = new HashMap<>();
-//            map.put("teksti", "Keskustelualueet");
-//            map.put("alueet", aDao.findAll());
-//
-//            return new ModelAndView(map, "alueet");
-//        }, new ThymeleafTemplateEngine());
-//
-//        post("/chat/alueet", (req, res) -> {
-//            String alue = req.queryParams("alue");
-//
-//            if (aDao.haeNimella(alue) != null) {
-//                return "Alue on jo olemassa";
-//            }
-//
-//            aDao.lisaaAlue(alue);
-//
-//            res.redirect("/chat/alueet");
-//            return "Lisätty";
-//        });
         get("/chat/alueet/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             int id = Integer.parseInt(req.params("id"));
