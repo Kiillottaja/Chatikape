@@ -142,37 +142,32 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         }
     }
 
-//    public List<Viesti> alueViestitYhteensaViimeisinViesti(Alue alue) throws SQLException {
-//
-//        List<Viesti> list = new ArrayList();
-//        try (Connection conn = data.getConnection()) {
-//            PreparedStatement stmt = conn.prepareStatement("SELECT a.nimi Keskustelualue, COUNT(ke.id) Viestejä, MAX(v.pvm) Viimeisin FROM Alue a, Keskustelu ke, Viesti v WHERE v.keskustelu_id=ke.id AND v.alue_id=a.id Group BY a.nimi;");
-//            stmt.setObject(1, keskustelu.getId());
-//
-//            ResultSet rs = stmt.executeQuery();
-//
-//            while (rs.next()) {
-//                Integer id = rs.getInt("id");
-//                String nimimerkki = rs.getString("nimimerkki");
-//                String teksti = rs.getString("teksti");
-//                String pvm = rs.getString("pvm");
-//
-//                Viesti v = new Viesti(id, teksti, pvm);
-//
-//                v.setKayttaja(kaDao.findOne(nimimerkki));
-//                v.setKeskustelu(keDao.findOne(id));
-//
-//                System.out.println(v);
-//
-//                list.add(v);
-//            }
-//
-//            rs.close();
-//            stmt.close();
-//            conn.close();
-//
-//            return list;
-//        }
-//    }
+    public List<AlueenKoonti> alueViestitYhteensaViimeisinViesti() throws SQLException {
+
+        List<AlueenKoonti> list = new ArrayList();
+        try (Connection conn = data.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT a.nimi keskustelualue, COUNT(ke.id) viesteja, MAX(v.pvm) viimeisin FROM Alue a, Keskustelu ke, Viesti v WHERE v.keskustelu_id=ke.id AND v.alue_id=a.id Group BY a.nimi;");
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String keskustelu = rs.getString("keskustelualue");
+                Integer viesteja = rs.getInt("viesteja");
+                String viimeisin = rs.getString("viimeisin");
+                
+                AlueenKoonti ak = new AlueenKoonti(keskustelu, viesteja, viimeisin);
+
+                System.out.println(ak);
+
+                list.add(ak);
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            return list;
+        }
+    }
 
 }
