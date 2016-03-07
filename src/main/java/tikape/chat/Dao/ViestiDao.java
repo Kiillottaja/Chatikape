@@ -143,20 +143,23 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         }
     }
 
-    public List<AlueenKoonti> alueViestitYhteensaViimeisinViesti() throws SQLException {
+    public List<Alue> alueViestitYhteensaViimeisinViesti() throws SQLException {
 
-        List<AlueenKoonti> list = new ArrayList();
+        List<Alue> list = new ArrayList();
         try (Connection conn = data.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT a.nimi AS nimi, COUNT(ke.id) AS maara, MAX(v.pvm) AS max FROM Alue a, Keskustelu ke, Viesti v WHERE v.keskustelu_id=ke.id AND v.alue_id=a.id Group BY a.nimi;");
+            PreparedStatement stmt = conn.prepareStatement("SELECT a.id AS id, a.nimi AS nimi, COUNT(ke.id) AS maara, MAX(v.pvm) AS max FROM Alue a, Keskustelu ke, Viesti v WHERE v.keskustelu_id=ke.id AND v.alue_id=a.id Group BY a.nimi;");
 
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
-                String keskustelu = rs.getString("nimi");
-                Integer viesteja = rs.getInt("maara");
+                Integer id = rs.getInt("id");
+                String nimi = rs.getString("nimi");
+                Integer maara = rs.getInt("maara");
                 String viimeisin = rs.getString("max");
 
-                AlueenKoonti ak = new AlueenKoonti(keskustelu, viesteja, viimeisin);
+                Alue ak = new Alue(id, nimi);
+                ak.setViesteja(maara);
+                ak.setViimeisin(viimeisin);
 
                 System.out.println(ak);
 

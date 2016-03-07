@@ -13,6 +13,8 @@ public class Alue {
 
     private Integer id;
     private String nimi;
+    private int viesteja;
+    private String viimeisin;
 
     public Alue(Integer id, String nimi) {
         this.id = id;
@@ -39,9 +41,25 @@ public class Alue {
         return id;
     }
 
+    public int getViesteja() {
+        return viesteja;
+    }
+
+    public void setViesteja(int viestejä) {
+        this.viesteja = viestejä;
+    }
+
+    public String getViimeisin() {
+        return viimeisin;
+    }
+
+    public void setViimeisin(String viimeisin) {
+        this.viimeisin = viimeisin;
+    }
+
     @Override
     public String toString() {
-        return id + " " + nimi;
+        return this.nimi + "\t" + this.viesteja + "\t" + this.viimeisin;
     }
 
 }

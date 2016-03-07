@@ -54,7 +54,7 @@ public class Main {
         AlueDao aDao = new AlueDao(data);
         KeskusteluDao keDao = new KeskusteluDao(data, aDao);
         ViestiDao vDao = new ViestiDao(data, kaDao, keDao, aDao);
-        
+
         get("/chat", (req, res) -> {
             HashMap map = new HashMap<>();
 
@@ -129,7 +129,7 @@ public class Main {
             res.redirect("/chat/alueet");
             return "Lisätty";
         });
-        
+
 //        get("/chat/alueet", (req, res) -> {
 //            HashMap map = new HashMap<>();
 //            map.put("teksti", "Keskustelualueet");
@@ -150,7 +150,6 @@ public class Main {
 //            res.redirect("/chat/alueet");
 //            return "Lisätty";
 //        });
-
         get("/chat/alueet/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             int id = Integer.parseInt(req.params("id"));

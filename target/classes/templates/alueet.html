@@ -17,7 +17,7 @@
                 <h5 th:text="${otsikot}">otsikot</h5>
                 <ul>
                     <li th:each="alue: ${alueet}">
-                        <a th:href="@{~/chat/alueet/{id}(id=${alue.getAlue()})}">
+                        <a th:href="@{~/chat/alueet/{id}(id=${alue.getId()})}">
                             <span th:text="${alue.toString()}">aluenimi</span>
                         </a>
                     </li>
