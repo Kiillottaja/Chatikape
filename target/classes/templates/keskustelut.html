@@ -44,8 +44,11 @@
             </fieldset>
             <br/>
             <fieldset>
-<!--                Tämä on rikki!-->
-                <input name="return" type="button" onclick="th:href = '@{~/chat/alueet/{id}(id=${keskustelu.getAlue().getId()})}'" value="Takaisin"/>
+                <!--                Tämä on rikki!-->
+                <!--                <input name="return" type="button" onclick="th:href = '@{~/chat/alueet/{id}(id=${keskustelu.getAlue().getId()})}'" value="Takaisin"/>-->
+                <a th:href="@{~/chat/alueet/{id}(id=${keskustelu.getAlue().getId()})}">
+                    <span> Takaisin </span>
+                </a>
             </fieldset>
         </form>
 
