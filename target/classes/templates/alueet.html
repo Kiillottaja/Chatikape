@@ -14,11 +14,11 @@
             <fieldset style="background-color: #F5F5F5; color: #FF9900; text-shadow: initial">
                 <legend th:text="${teksti}"> testi </legend> 
                 <!--<textarea name=keskustelualueet rows="20" cols="150" wrap="Virtual"></textarea>-->
-                <h5 th:text="${otsikot}">otsikot</h5>
+                <h5 th:text="${otsikot}" style="color: #333333">otsikot</h5>
                 <ul>
                     <li th:each="alue: ${alueet}">
                         <a th:href="@{~/chat/alueet/{id}(id=${alue.getId()})}">
-                            <span th:text="${alue.toString()}">aluenimi</span>
+                            <span th:text="${alue.toString()}" style="color: #333333">aluenimi</span>
                         </a>
                     </li>
                 </ul>
