@@ -74,8 +74,8 @@ public class Main {
 
             HashMap map = new HashMap<>();
 
-            return "Käyttäjätunnus tai salasana eivät täsmää   -   "
-                    + "\n"
+            return "Käyttäjätunnus tai salasana eivät täsmää"
+                    + "<br/>"
                     + "<a href = '/chat'> "
                     + "<span> Takaisin </span> "
                     + "</a>";
@@ -94,32 +94,32 @@ public class Main {
             String salasana2 = req.queryParams("salasana2");
 
             if (kaDao.findOne(nimimerkki) != null) {
-                return "Nimimerkki on jo käytössä   -   "
-                        + "\n"
+                return "Nimimerkki on jo käytössä"
+                        + "<br/>"
                         + "<a href = '/chat/luokayttaja'> "
                         + "<span> Takaisin </span> "
                         + "</a>";
             }
 
             if (!salasana.equals(salasana2)) {
-                return "Tarkasta salasanojen vastaavuus   -   "
-                        + "\n"
+                return "Tarkasta salasanojen vastaavuus"
+                        + "<br/>"
                         + "<a href = '/chat/luokayttaja'> "
                         + "<span> Takaisin </span> "
                         + "</a>";
             }
 
             if (nimimerkki.length() < 3) {
-                return "Nimimerkki liian lyhyt. Anna yli 2 merkkiä pitkä nimimerkki   -   "
-                        + "\n"
+                return "Nimimerkki liian lyhyt. Anna yli 2 merkkiä pitkä nimimerkki"
+                        + "<br/>"
                         + "<a href = '/chat/luokayttaja'> "
                         + "<span> Takaisin </span> "
                         + "</a>";
             }
             
             if (salasana.length() < 3) {
-                return "Salasana liian lyhyt. Anna yli 2 merkkiä pitkä salasana   -   "
-                        + "\n"
+                return "Salasana liian lyhyt. Anna yli 2 merkkiä pitkä salasana"
+                        + "<br/>"
                         + "<a href = '/chat/luokayttaja'> "
                         + "<span> Takaisin </span> "
                         + "</a>";
@@ -151,8 +151,8 @@ public class Main {
             String alue = req.queryParams("alue");
 
             if (aDao.haeNimella(alue) != null) {
-                return "Alue on jo olemassa   -   "
-                        + "\n"
+                return "Alue on jo olemassa"
+                        + "<br/>"
                         + "<a href = '/chat/alueet'> "
                         + "<span> Takaisin </span> "
                         + "</a>";
@@ -185,8 +185,8 @@ public class Main {
             k.setAlue(aDao.findOne(id));
 
             if (keDao.haeNimella(otsikko) != null) {
-                return "Keskustelu on jo olemassa   -   "
-                        + "\n"
+                return "Keskustelu on jo olemassa"
+                        + "<br/>"
                         + "<a href = '/chat/alueet/" + id + "'> "
                         + "<span> Takaisin </span> "
                         + "</a>";
@@ -217,8 +217,8 @@ public class Main {
             int id = Integer.parseInt(req.params("id"));
 
             if (viesti.length() > 160) {
-                return "Viesti liian pitkä!   -   "
-                        + "\n"
+                return "Viesti liian pitkä!"
+                        + "<br/>"
                         + "<a href = '/chat/" + id + "/keskustelut'> "
                         + "<span> Takaisin </span> "
                         + "</a>";
