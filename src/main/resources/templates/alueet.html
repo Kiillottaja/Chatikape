@@ -6,12 +6,12 @@
         <meta charset="utf-8" />
     </head>
 
-    <body bgcolor="#E6E6FA">
+    <body bgcolor="#D3D3D3">
 
         <h2> Tervetuloa foorumille </h2>
 
         <form method="post">
-            <fieldset>
+            <fieldset style="background-color: #F5F5F5; color: #FF9900; text-shadow: initial">
                 <legend th:text="${teksti}"> testi </legend> 
                 <!--<textarea name=keskustelualueet rows="20" cols="150" wrap="Virtual"></textarea>-->
                 <h5 th:text="${otsikot}">otsikot</h5>
@@ -28,7 +28,7 @@
         <br/>
 
         <form method="POST" action="/chat/alueet">
-            <fieldset>
+            <fieldset style="background-color: #F5F5F5; color: #FF9900; text-shadow: initial">
                 <legend> Luo uusi keskustelualue </legend>
                 <br/>
                 Alueen nimi:

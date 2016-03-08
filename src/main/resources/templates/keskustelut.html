@@ -6,17 +6,17 @@
         <meta charset="utf-8" />
     </head>
 
-    <body bgcolor="#E6E6FA">
+    <body bgcolor="#D3D3D3">
 
         <h3 th:text="${otsikko}">testi</h3>
 
         <form>
-            <fieldset>
+            <fieldset style="background-color: #F5F5F5; color: #FF9900; text-shadow: initial">
                 <legend> Viestit </legend>
                 <br/>
                 <ul>
                     <li th:each="viesti: ${viestit}">
-                        <span th:text="${viesti.toString()}"> viesti </span>
+                        <span th:text="${viesti.toString()}" style="color: #333333"> viesti </span>
                     </li>
                 </ul>
                 <br/>
@@ -26,7 +26,7 @@
         <br/>
 
         <form method="POST" th:action="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}">
-            <fieldset>
+            <fieldset style="background-color: #F5F5F5; color: #FF9900; text-shadow: initial">
                 <legend> Lähetä uusi viesti </legend>
                 <br/>
                 Viesti (max 160 merkkiä):

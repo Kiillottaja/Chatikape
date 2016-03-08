@@ -7,47 +7,43 @@
     </head>
 
 
-    <body bgcolor="#E6E6FA">
+    <body bgcolor="#D3D3D3">
 
-        <body>
+        <h3 th:text="${otsikko}">testi</h3>
 
-            <h3 th:text="${otsikko}">testi</h3>
+        <form>
+            <fieldset style="background-color: #F5F5F5; color: #FF9900; text-shadow: initial">
+                <legend> Keskustelut </legend>
+                <ul>
+                    <li th:each="keskustelu: ${keskustelut}">
+                        <a th:href="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}" th:text="${keskustelu.getOtsikko()}" style="color: #333333"> otsikko</a>
+                    </li>
+                </ul>
+            </fieldset>
 
-            <form>
-                <fieldset>
-                    <legend> Keskustelut </legend>
-                    <ul>
-                        <li th:each="keskustelu: ${keskustelut}">
-                            <a th:href="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}" th:text="${keskustelu.getOtsikko()}"> otsikko</a>
-                        </li>
-                    </ul>
-                </fieldset>
+        </form>
 
-            </form>
+        <br/>
 
-            <br/>
-
-            <form method="POST" ath:action="@{~/chat/aiheet/{id}(id=${aihe.getId()})}">
-                <fieldset>
-                    <legend> Luo uusi keskustelu </legend>
-                    <br/>
-                    Keskustelun otsikko:
-                    <br/>
-                    <input type="text" name="otsikko"/>
-                    <br/>
-                    <br/>
-                    <input type="submit" value="Luo"/>
-                    <br/>
-                </fieldset>
+        <form method="POST" ath:action="@{~/chat/aiheet/{id}(id=${aihe.getId()})}">
+            <fieldset style="background-color: #F5F5F5; color: #FF9900; text-shadow: initial">
+                <legend> Luo uusi keskustelu </legend>
                 <br/>
-                <fieldset>
-                    <a href="/chat/alueet">
-                        <span> Takaisin </span>
-                    </a>
-                </fieldset>
-            </form>
-
-        </body>
+                Keskustelun otsikko:
+                <br/>
+                <input type="text" name="otsikko"/>
+                <br/>
+                <br/>
+                <input type="submit" value="Luo"/>
+                <br/>
+            </fieldset>
+            <br/>
+            <fieldset>
+                <a href="/chat/alueet">
+                    <span> Takaisin </span>
+                </a>
+            </fieldset>
+        </form>
 
     </body>
 
