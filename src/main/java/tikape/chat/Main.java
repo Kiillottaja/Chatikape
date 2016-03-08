@@ -29,8 +29,6 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public String nimimerkki;
-
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
 
@@ -54,6 +52,7 @@ public class Main {
         AlueDao aDao = new AlueDao(data);
         KeskusteluDao keDao = new KeskusteluDao(data, aDao);
         ViestiDao vDao = new ViestiDao(data, kaDao, keDao, aDao);
+        Kayttaja nykyinen = new Kayttaja("");
 
         get("/chat", (req, res) -> {
             HashMap map = new HashMap<>();
@@ -68,13 +67,18 @@ public class Main {
 
             Kayttaja kayt = new Kayttaja(nimimerkki, salasana);
             if (kaDao.onkoTietokannassa(kayt)) {
+                nykyinen.setNimimerkki(nimimerkki);
                 res.redirect("chat/alueet");
                 return "Tervetuloa keskustelufoorumille " + nimimerkki;
             }
 
             HashMap map = new HashMap<>();
 
-            return "Käyttäjätunnus tai salasana eivät täsmää " + new ModelAndView(map, "index");
+            return "Käyttäjätunnus tai salasana eivät täsmää   -   "
+                    + "\n"
+                    + "<a href = '/chat'> "
+                    + "<span> Takaisin </span> "
+                    + "</a>";
         });
 
         get("/chat/luokayttaja", (req, res) -> {
@@ -90,19 +94,45 @@ public class Main {
             String salasana2 = req.queryParams("salasana2");
 
             if (kaDao.findOne(nimimerkki) != null) {
-                return "Nimimerkki on jo käytössä";
+                return "Nimimerkki on jo käytössä   -   "
+                        + "\n"
+                        + "<a href = '/chat/luokayttaja'> "
+                        + "<span> Takaisin </span> "
+                        + "</a>";
             }
 
             if (!salasana.equals(salasana2)) {
-                return "Tarkasta salasanojen vastaavuus";
+                return "Tarkasta salasanojen vastaavuus   -   "
+                        + "\n"
+                        + "<a href = '/chat/luokayttaja'> "
+                        + "<span> Takaisin </span> "
+                        + "</a>";
+            }
+
+            if (nimimerkki.length() < 3) {
+                return "Nimimerkki liian lyhyt. Anna yli 2 merkkiä pitkä nimimerkki   -   "
+                        + "\n"
+                        + "<a href = '/chat/luokayttaja'> "
+                        + "<span> Takaisin </span> "
+                        + "</a>";
+            }
+            
+            if (salasana.length() < 3) {
+                return "Salasana liian lyhyt. Anna yli 2 merkkiä pitkä salasana   -   "
+                        + "\n"
+                        + "<a href = '/chat/luokayttaja'> "
+                        + "<span> Takaisin </span> "
+                        + "</a>";
             }
 
             Kayttaja kayt = new Kayttaja(nimimerkki, salasana);
             if (!kaDao.onkoTietokannassa(kayt)) {
                 kaDao.lisaaKayttaja(kayt);
+                nykyinen.setNimimerkki(nimimerkki);
                 res.redirect("/chat/alueet");
                 return "Käyttäjä lisätty tietokantaan: " + nimimerkki;
             }
+            nykyinen.setNimimerkki(nimimerkki);
             res.redirect("/chat/alueet");
             return "Sinulla on jo käyttäjätunnus. Tervetuloa keskustelufoorumille " + kayt.getNimimerkki();
         });
@@ -121,7 +151,11 @@ public class Main {
             String alue = req.queryParams("alue");
 
             if (aDao.haeNimella(alue) != null) {
-                return "Alue on jo olemassa";
+                return "Alue on jo olemassa   -   "
+                        + "\n"
+                        + "<a href = '/chat/alueet'> "
+                        + "<span> Takaisin </span> "
+                        + "</a>";
             }
 
             aDao.lisaaAlue(alue);
@@ -130,26 +164,6 @@ public class Main {
             return "Lisätty";
         });
 
-//        get("/chat/alueet", (req, res) -> {
-//            HashMap map = new HashMap<>();
-//            map.put("teksti", "Keskustelualueet");
-//            map.put("alueet", aDao.findAll());
-//
-//            return new ModelAndView(map, "alueet");
-//        }, new ThymeleafTemplateEngine());
-//
-//        post("/chat/alueet", (req, res) -> {
-//            String alue = req.queryParams("alue");
-//
-//            if (aDao.haeNimella(alue) != null) {
-//                return "Alue on jo olemassa";
-//            }
-//
-//            aDao.lisaaAlue(alue);
-//
-//            res.redirect("/chat/alueet");
-//            return "Lisätty";
-//        });
         get("/chat/alueet/:id", (req, res) -> {
             HashMap map = new HashMap<>();
             int id = Integer.parseInt(req.params("id"));
@@ -171,7 +185,11 @@ public class Main {
             k.setAlue(aDao.findOne(id));
 
             if (keDao.haeNimella(otsikko) != null) {
-                return "Keskustelu on jo olemassa";
+                return "Keskustelu on jo olemassa   -   "
+                        + "\n"
+                        + "<a href = '/chat/alueet/" + id + "'> "
+                        + "<span> Takaisin </span> "
+                        + "</a>";
             }
 
             keDao.lisaaKeskustelu(k);
@@ -194,18 +212,18 @@ public class Main {
 
         post("/chat/:id/keskustelut", (req, res) -> {
 
-            String nimimerkki = req.queryParams("nimimerkki");
+            String nimimerkki = nykyinen.getNimimerkki();
             String viesti = req.queryParams("viesti");
-
-            if (kaDao.findOne(nimimerkki) == null) {
-                return "Nimimerkkiä ei löydy";
-            }
+            int id = Integer.parseInt(req.params("id"));
 
             if (viesti.length() > 160) {
-                return "Viesti liian pitkä!";
+                return "Viesti liian pitkä!   -   "
+                        + "\n"
+                        + "<a href = '/chat/" + id + "/keskustelut'> "
+                        + "<span> Takaisin </span> "
+                        + "</a>";
             }
 
-            int id = Integer.parseInt(req.params("id"));
             Viesti v = new Viesti(viesti);
             v.setKayttaja(kaDao.findOne(nimimerkki));
             v.setKeskustelu(keDao.findOne(id));
