@@ -59,7 +59,7 @@ public class Alue {
 
     @Override
     public String toString() {
-        return this.nimi + "\t" + this.viesteja + "\t" + this.viimeisin;
+        return "%-10s %-10s %10s\n"+ this.nimi + this.viesteja + this.viimeisin;
     }
 
 }
