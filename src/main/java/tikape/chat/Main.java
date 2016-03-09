@@ -116,7 +116,7 @@ public class Main {
                         + "<span> Takaisin </span> "
                         + "</a>";
             }
-            
+
             if (salasana.length() < 3) {
                 return "Salasana liian lyhyt. Anna yli 2 merkkiä pitkä salasana"
                         + "<br/>"
@@ -141,17 +141,26 @@ public class Main {
             HashMap map = new HashMap<>();
             map.put("teksti", "Keskustelualueet");
             map.put("alueet", vDao.alueViestitYhteensaViimeisinViesti());
-            String otsikot = "Nimi \t Viestien määrä \t Viimeisin viesti";
+            String otsikot = "\t    Nimi    \t    Viestien määrä    \t    Viimeisin viesti";
             map.put("otsikot", otsikot);
 
             return new ModelAndView(map, "alueet");
         }, new ThymeleafTemplateEngine());
 
         post("/chat/alueet", (req, res) -> {
-            String alue = req.queryParams("alue");
+            String alue = "";
+            alue = req.queryParams("alue");
 
             if (aDao.haeNimella(alue) != null) {
                 return "Alue on jo olemassa"
+                        + "<br/>"
+                        + "<a href = '/chat/alueet'> "
+                        + "<span> Takaisin </span> "
+                        + "</a>";
+            }
+
+            if (alue.isEmpty()) {
+                return "Anna pidempi alueen nimi"
                         + "<br/>"
                         + "<a href = '/chat/alueet'> "
                         + "<span> Takaisin </span> "
@@ -192,6 +201,14 @@ public class Main {
                         + "</a>";
             }
 
+            if (otsikko.isEmpty()) {
+                return "Anna pidempi otsikko"
+                        + "<br/>"
+                        + "<a href = '/chat/alueet/" + id + "'> "
+                        + "<span> Takaisin </span> "
+                        + "</a>";
+            }
+
             keDao.lisaaKeskustelu(k);
 
             res.redirect("/chat/alueet/" + id);
@@ -213,7 +230,8 @@ public class Main {
         post("/chat/:id/keskustelut", (req, res) -> {
 
             String nimimerkki = nykyinen.getNimimerkki();
-            String viesti = req.queryParams("viesti");
+            String viesti = "";
+            viesti = req.queryParams("viesti");
             int id = Integer.parseInt(req.params("id"));
 
             if (viesti.length() > 160) {
@@ -224,9 +242,26 @@ public class Main {
                         + "</a>";
             }
 
+            if (viesti.isEmpty()) {
+                return "Viesti on tyhjä!"
+                        + "<br/>"
+                        + "<a href = '/chat/" + id + "/keskustelut'> "
+                        + "<span> Takaisin </span> "
+                        + "</a>";
+            }
+
+            if (nimimerkki.isEmpty()) {
+                return "Kirjautuminen epäonnistui. Kirjaudu uudelleen!"
+                        + "<br/>"
+                        + "<a href=/chat/>"
+                        + "<span> Takaisin </span> "
+                        + "</a>";
+            }
+
             Viesti v = new Viesti(viesti);
             v.setKayttaja(kaDao.findOne(nimimerkki));
             v.setKeskustelu(keDao.findOne(id));
+            v.setAlue(keDao.findOne(id).getAlue());
 
             vDao.lisaaViesti(v);
 

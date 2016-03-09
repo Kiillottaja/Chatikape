@@ -136,7 +136,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         try (Connection conn = data.getConnection()) {
             Statement stmt = conn.createStatement();
 
-            stmt.executeUpdate("INSERT INTO Viesti(nimimerkki, keskustelu_id,alue_id, teksti) VALUES('" + v.getKayttaja().getNimimerkki() + "', " + v.getKeskustelu().getId() + ", " + v.getAlue() + ", '" + v.getTeksti() + "');");
+            stmt.executeUpdate("INSERT INTO Viesti(nimimerkki, keskustelu_id, alue_id, teksti) VALUES('" + v.getKayttaja().getNimimerkki() + "', " + v.getKeskustelu().getId() + ", " + v.getAlue().getId() + ", '" + v.getTeksti() + "');");
 
             stmt.close();
             conn.close();
@@ -147,7 +147,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         List<Alue> list = new ArrayList();
         try (Connection conn = data.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT a.nimi nimi, COUNT(ke.id) maara, MAX(v.pvm) viimeisin FROM Alue a, Keskustelu ke, Viesti v WHERE v.keskustelu_id=ke.id AND v.alue_id=a.id Group BY a.nimi;");
+            PreparedStatement stmt = conn.prepareStatement("SELECT a.id AS id, a.nimi AS nimi, COUNT(ke.id) AS maara, MAX(v.pvm) AS viimeisin FROM Alue a LEFT JOIN Keskustelu ke ON a.id = ke.alue_id LEFT JOIN Viesti v ON v.keskustelu_id=ke.id Group BY a.nimi ORDER BY a.nimi;");
 
             ResultSet rs = stmt.executeQuery();
 
@@ -155,13 +155,14 @@ public class ViestiDao implements Dao<Viesti, Integer> {
                 Integer id = rs.getInt("id");
                 String nimi = rs.getString("nimi");
                 Integer maara = rs.getInt("maara");
-                String viimeisin = rs.getString("viimeisin");
-
+                String viimeisin = "";
+                if (rs.getString("viimeisin") != null) {
+                    viimeisin = rs.getString("viimeisin");
+                }
                 Alue ak = new Alue(id, nimi);
+
                 ak.setViesteja(maara);
                 ak.setViimeisin(viimeisin);
-
-                System.out.println(ak);
 
                 list.add(ak);
             }

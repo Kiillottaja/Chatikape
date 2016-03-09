@@ -60,7 +60,11 @@ public class Alue {
     @Override
     public String toString() {
 
-        return this.nimi + "/t" + this.viesteja + "/t" + this.viimeisin;
+        if (this.viesteja == 0 & this.viimeisin.isEmpty()) {
+            return this.nimi;
+        }
+        
+        return this.nimi + "  \t  " + this.viesteja + "  \t  " + this.viimeisin;
     }
 
 }
