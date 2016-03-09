@@ -78,7 +78,7 @@ public class Database {
 
         // heroku käyttää SERIAL-avainsanaa uuden tunnuksen automaattiseen luomiseen
         lista.add("CREATE TABLE Kayttaja(nimimerkki VARCHAR(50) PRIMARY KEY, salasana VARCHAR(20) NOT NULL, CONSTRAINT Tarkastus CHECK (LENGTH(nimimerkki) > 2 AND LENGTH(salasana > 2)));");
-        lista.add("CREATE TABLE Viesti(id SERIAL PRIMARY KEY, nimimerkki VARCHAR(50), keskustelu_id integer, alue_id integer,teksti VARCHAR(160) NOT NULL, pvm TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (nimimerkki) REFERENCES Kayttaja (nimimerkki), FOREIGN KEY (keskustelu_id) REFERENCES Keskustelu (id), FOREIGN KEY (alue_id) REFERENCES Alue (id) );");
+        lista.add("CREATE TABLE Viesti(id SERIAL PRIMARY KEY, nimimerkki VARCHAR(50), keskustelu_id integer, alue_id integer, teksti VARCHAR(160) NOT NULL, pvm TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (nimimerkki) REFERENCES Kayttaja (nimimerkki), FOREIGN KEY (keskustelu_id) REFERENCES Keskustelu (id), FOREIGN KEY (alue_id) REFERENCES Alue (id) );");
         lista.add("CREATE TABLE Keskustelu(id SERIAL PRIMARY KEY, alue_id integer, otsikko text NOT NULL, FOREIGN KEY (alue_id) REFERENCES Alue (id), CONSTRAINT Tarkastus CHECK(LENGTH(otsikko) > 2));");
         lista.add("CREATE TABLE Alue(id SERIAL PRIMARY KEY, nimi VARCHAR(100) NOT NULL);");
 
