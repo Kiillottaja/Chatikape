@@ -19,6 +19,8 @@ public class Alue {
     public Alue(Integer id, String nimi) {
         this.id = id;
         this.nimi = nimi;
+        this.viesteja = 0;
+        this.viimeisin = "-";
     }
 
     public Alue(String nimi) {
@@ -64,7 +66,7 @@ public class Alue {
             return this.nimi;
         }
         
-        return this.nimi + "  \t  " + this.viesteja + "  \t  " + this.viimeisin;
+        return this.nimi + " \t " + this.viesteja + " \t " + this.viimeisin;
     }
 
 }

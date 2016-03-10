@@ -4,6 +4,12 @@
     <head>
         <title th:text="${otsikko}">otsikko</title>
         <meta charset="utf-8" />
+        <style>
+            div.scroll {
+                overflow:scroll;
+                height:200px;              
+            }
+        </style>
     </head>
 
     <body bgcolor="#D3D3D3">
@@ -13,13 +19,34 @@
         <form>
             <fieldset style="background-color: #F5F5F5; color: #FF9900; text-shadow: initial">
                 <legend> Viestit </legend>
-                <br/>
-                <ul>
-                    <li th:each="viesti: ${viestit}">
-                        <span th:text="${viesti.toString()}" style="color: #333333"> viesti </span>
-                    </li>
-                </ul>
-                <br/>
+                <table style="width:100%;">
+                    <tr style=" text-align: left; color: #333333 ">
+                        <th>Aika</th>
+                        <th>Lähettäjä</th>
+                        <th>Viesti</th>
+                    </tr>
+                </table>
+                <div class="scroll" id="bottom">
+                    <table style="width:100%;">
+                        <tr th:each="viesti: ${viestit}">
+                            <td>
+                                <a>
+                                    <span th:text="${viesti.getPvm()}" style="color: #333333">aika</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a>
+                                    <span th:text="${viesti.getKayttaja()}" style="color: #333333">aika</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a>
+                                    <span th:text="${viesti.getTeksti()}" style="color: #333333">teksti</span>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </fieldset>
         </form>
 

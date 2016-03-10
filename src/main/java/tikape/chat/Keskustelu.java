@@ -21,7 +21,7 @@ public class Keskustelu {
         this.id = id;
         this.otsikko = otsikko;
         this.viesteja = 0;
-        this.viimeisin = "";
+        this.viimeisin = "-";
     }
 
     public Keskustelu(String otsikko) {

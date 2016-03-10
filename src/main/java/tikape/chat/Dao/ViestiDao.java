@@ -155,7 +155,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
                 Integer id = rs.getInt("id");
                 String nimi = rs.getString("nimi");
                 Integer maara = rs.getInt("maara");
-                String viimeisin = "";
+                String viimeisin = "-";
                 if (rs.getString("viimeisin") != null) {
                     viimeisin = rs.getString("viimeisin");
                 }

@@ -146,7 +146,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
                 Integer id = rs.getInt("id");
                 String otsikko = rs.getString("otsikko");
                 Integer maara = rs.getInt("maara");
-                String viimeisin = "";
+                String viimeisin = "-";
                 if (rs.getString("viimeisin") != null) {
                     viimeisin = rs.getString("viimeisin");
                 }
