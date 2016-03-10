@@ -10,11 +10,13 @@
                 height:200px;              
             }
 
-            th {
+            th, td {
                 border-bottom: 1px #333333;
+                padding-left: 10px;
             }
 
             .b1 {border-bottom-style:solid;}
+            .b1 {border-bottom-style:none;}
             
             tr:nth-child(even){background-color: #dcdcdc}
         </style>
@@ -37,17 +39,17 @@
                 <div class="scroll" id="bottom">
                     <table style="width:100%;">
                         <tr th:each="viesti: ${viestit}">
-                            <td style="width:15%;">
+                            <td style="width:15%;" class="b2">
                                 <a>
                                     <span th:text="${viesti.getPvm()}" style="color: #333333">aika</span>
                                 </a>
                             </td>
-                            <td style="width:15%;">
+                            <td style="width:15%;" class="b1">
                                 <a>
                                     <span th:text="${viesti.getKayttaja()}" style="color: #333333">aika</span>
                                 </a>
                             </td>
-                            <td>
+                            <td class="b1">
                                 <a>
                                     <span th:text="${viesti.getTeksti()}" style="color: #333333">teksti</span>
                                 </a>
