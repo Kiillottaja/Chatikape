@@ -66,9 +66,11 @@ public class Keskustelu {
 
     @Override
     public String toString() {
+        
         if (viesteja == 0 & viimeisin.isEmpty()) {
             return otsikko;
         }
+        
         return otsikko + "\t" + viesteja + "\t" + viimeisin;
     }
 

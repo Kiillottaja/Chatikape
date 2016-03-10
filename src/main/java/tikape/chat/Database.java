@@ -79,8 +79,8 @@ public class Database {
         // heroku käyttää SERIAL-avainsanaa uuden tunnuksen automaattiseen luomiseen
         lista.add("CREATE TABLE Kayttaja(nimimerkki VARCHAR(50) PRIMARY KEY, salasana VARCHAR(20) NOT NULL, CONSTRAINT Tarkastus CHECK (LENGTH(nimimerkki) > 2 AND LENGTH(salasana > 2)));");
         lista.add("CREATE TABLE Viesti(id SERIAL PRIMARY KEY, nimimerkki VARCHAR(50), keskustelu_id integer, alue_id integer, teksti VARCHAR(160) NOT NULL, pvm TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (nimimerkki) REFERENCES Kayttaja (nimimerkki), FOREIGN KEY (keskustelu_id) REFERENCES Keskustelu (id), FOREIGN KEY (alue_id) REFERENCES Alue (id) );");
-        lista.add("CREATE TABLE Keskustelu(id SERIAL PRIMARY KEY, alue_id integer, otsikko text NOT NULL, FOREIGN KEY (alue_id) REFERENCES Alue (id), CONSTRAINT Tarkastus CHECK(LENGTH(otsikko) > 2));");
-        lista.add("CREATE TABLE Alue(id SERIAL PRIMARY KEY, nimi VARCHAR(100) NOT NULL);");
+        lista.add("CREATE TABLE Keskustelu(id SERIAL PRIMARY KEY, alue_id integer, otsikko VARCHAR(30) NOT NULL, FOREIGN KEY (alue_id) REFERENCES Alue (id), CONSTRAINT Tarkastus CHECK(LENGTH(otsikko) > 2));");
+        lista.add("CREATE TABLE Alue(id SERIAL PRIMARY KEY, nimi VARCHAR(30) NOT NULL);");
 
         lista.add("INSERT INTO Kayttaja(nimimerkki, salasana) VALUES ('Teme', 'teme666');");
         lista.add("INSERT INTO Kayttaja(nimimerkki, salasana) VALUES ('Late', 'late666');");
@@ -112,8 +112,8 @@ public class Database {
         // tietokantataulujen luomiseen tarvittavat komennot suoritusjärjestyksessä
         lista.add("CREATE TABLE Kayttaja(nimimerkki VARCHAR(50) PRIMARY KEY, salasana VARCHAR(20) NOT NULL, CONSTRAINT Tarkastus CHECK (LENGTH(nimimerkki) > 2 AND LENGTH(salasana > 2)));");
         lista.add("CREATE TABLE Viesti(id integer PRIMARY KEY, nimimerkki VARCHAR(50), keskustelu_id integer, alue_id integer, teksti VARCHAR(160) NOT NULL, pvm TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL, FOREIGN KEY (nimimerkki) REFERENCES Kayttaja (nimimerkki), FOREIGN KEY (keskustelu_id) REFERENCES Keskustelu (id), FOREIGN KEY (alue_id) REFERENCES Alue (id));");
-        lista.add("CREATE TABLE Keskustelu(id integer PRIMARY KEY, alue_id integer, otsikko text NOT NULL, FOREIGN KEY (alue_id) REFERENCES Alue (id), CONSTRAINT Tarkastus CHECK(LENGTH(otsikko) > 2));");
-        lista.add("CREATE TABLE Alue(id integer PRIMARY KEY, nimi VARCHAR(100) NOT NULL);");
+        lista.add("CREATE TABLE Keskustelu(id integer PRIMARY KEY, alue_id integer, otsikko VARCHAR(30) NOT NULL, FOREIGN KEY (alue_id) REFERENCES Alue (id), CONSTRAINT Tarkastus CHECK(LENGTH(otsikko) > 2));");
+        lista.add("CREATE TABLE Alue(id integer PRIMARY KEY, nimi VARCHAR(30) NOT NULL);");
 
         lista.add("INSERT INTO Kayttaja(nimimerkki, salasana) VALUES ('Teme', 'teme666');");
         lista.add("INSERT INTO Kayttaja(nimimerkki, salasana) VALUES ('Late', 'late666');");

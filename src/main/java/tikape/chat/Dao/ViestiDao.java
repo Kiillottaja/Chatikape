@@ -147,7 +147,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
         List<Alue> list = new ArrayList();
         try (Connection conn = data.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT a.id AS id, a.nimi AS nimi, COUNT(ke.id) AS maara, MAX(v.pvm) AS viimeisin FROM Alue a LEFT JOIN Keskustelu ke ON a.id = ke.alue_id LEFT JOIN Viesti v ON v.keskustelu_id=ke.id Group BY a.nimi ORDER BY a.nimi;");
+            PreparedStatement stmt = conn.prepareStatement("SELECT a.id AS id, a.nimi AS nimi, COUNT(v.id) AS maara, MAX(v.pvm) AS viimeisin FROM Alue a LEFT JOIN Keskustelu ke ON a.id = ke.alue_id LEFT JOIN Viesti v ON v.keskustelu_id=ke.id Group BY a.nimi ORDER BY a.nimi;");
 
             ResultSet rs = stmt.executeQuery();
 

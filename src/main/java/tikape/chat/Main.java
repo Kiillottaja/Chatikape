@@ -141,7 +141,7 @@ public class Main {
             HashMap map = new HashMap<>();
             map.put("teksti", "Keskustelualueet");
             map.put("alueet", vDao.alueViestitYhteensaViimeisinViesti());
-            String otsikot = "\t    Nimi    \t    Viestien määrä    \t    Viimeisin viesti";
+            String otsikot = "\t    Alue    \t    Viestejä yhteensä    \t    Viimeisin viesti";
             map.put("otsikot", otsikot);
 
             return new ModelAndView(map, "alueet");
