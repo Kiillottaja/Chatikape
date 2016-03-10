@@ -138,6 +138,13 @@ public class Main {
         });
 
         get("/chat/alueet", (req, res) -> {
+            
+            if (nykyinen.getNimimerkki().isEmpty()) {
+                HashMap map = new HashMap<>();
+
+                return new ModelAndView(map, "index");
+            }
+            
             HashMap map = new HashMap<>();
             map.put("teksti", "Keskustelualueet");
             map.put("alueet", vDao.alueViestitYhteensaViimeisinViesti());
@@ -174,6 +181,13 @@ public class Main {
         });
 
         get("/chat/alueet/:id", (req, res) -> {
+                        
+            if (nykyinen.getNimimerkki().isEmpty()) {
+                HashMap map = new HashMap<>();
+
+                return new ModelAndView(map, "index");
+            }
+            
             HashMap map = new HashMap<>();
             int id = Integer.parseInt(req.params("id"));
 
@@ -218,6 +232,13 @@ public class Main {
         });
 
         get("/chat/:id/keskustelut", (req, res) -> {
+                                    
+            if (nykyinen.getNimimerkki().isEmpty()) {
+                HashMap map = new HashMap<>();
+
+                return new ModelAndView(map, "index");
+            }
+            
             HashMap map = new HashMap<>();
 
             String otsikko = "Alue: " + keDao.findOne(Integer.parseInt(req.params("id"))).getAlue().getNimi() + " -> " + keDao.findOne(Integer.parseInt(req.params("id"))).getOtsikko();
