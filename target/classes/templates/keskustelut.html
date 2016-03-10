@@ -9,6 +9,10 @@
                 overflow:scroll;
                 height:200px;              
             }
+
+            tr {
+                border-bottom: 1px solid #333333;
+            }
         </style>
     </head>
 
@@ -20,21 +24,21 @@
             <fieldset style="background-color: #F5F5F5; color: #FF9900; text-shadow: initial">
                 <legend> Viestit </legend>
                 <table style="width:100%;">
-                    <tr style=" text-align: left; color: #333333 ">
-                        <th>Aika</th>
-                        <th>Lähettäjä</th>
+                    <tr style=" text-align: left; color: #333333">
+                        <th style="width:15%;">Aika</th>
+                        <th style="width:15%;">Lähettäjä</th>
                         <th>Viesti</th>
                     </tr>
                 </table>
                 <div class="scroll" id="bottom">
                     <table style="width:100%;">
                         <tr th:each="viesti: ${viestit}">
-                            <td>
+                            <td style="width:15%;">
                                 <a>
                                     <span th:text="${viesti.getPvm()}" style="color: #333333">aika</span>
                                 </a>
                             </td>
-                            <td>
+                            <td style="width:15%;">
                                 <a>
                                     <span th:text="${viesti.getKayttaja()}" style="color: #333333">aika</span>
                                 </a>
@@ -58,7 +62,7 @@
                 <br/>
                 Viesti (max 160 merkkiä):
                 <br/>
-                <textarea name="viesti" rows="10" cols="75" wrap="Virtual"></textarea>
+                <textarea name="viesti" rows="3" cols="75" wrap="Virtual"></textarea>
                 <br/>
                 <br/>
                 <input type="submit" value="Lähetä"/>
