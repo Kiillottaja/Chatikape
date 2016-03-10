@@ -6,8 +6,8 @@
         <meta charset="utf-8" />
         <style>
             div.scroll {
-                overflow:scroll;
-                height:200px;              
+                overflow:auto;
+                height:220px;              
             }
 
             th, td {
@@ -17,12 +17,13 @@
 
             .b1 {border-bottom-style:solid;}
             .b2 {border-bottom-style:none;}
-            
-            tr:nth-child(even){background-color: #dcdcdc}
+
+            tr:nth-child(even){background-color: #dcdcdc}  
         </style>
     </head>
 
     <body bgcolor="#D3D3D3">
+
 
         <h3 th:text="${otsikko}">testi</h3>
 
