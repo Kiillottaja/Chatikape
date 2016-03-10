@@ -61,6 +61,11 @@
             </fieldset>
         </form>
 
+        <script>
+            var objDiv = document.getElementById("bottom");
+            objDiv.scrollTop = objDiv.scrollHeight;
+        </script>
+        
         <br/>
 
         <form method="POST" th:action="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}">
