@@ -14,15 +14,16 @@
         <form>
             <fieldset style="background-color: #F5F5F5; color: #FF9900; text-shadow: initial">
                 <legend> Keskustelut </legend>
+                <h5 th:text="${otsikot}" style="color: #333333">otsikot</h5>
                 <ul>
                     <li th:each="keskustelu: ${keskustelut}">
-                        <a th:href="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}" th:text="${keskustelu.getOtsikko()}" style="color: #333333"> otsikko</a>
+                        <a th:href="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}" th:text="${keskustelu.toString()}" style="color: #333333"> otsikko</a>
                     </li>
                 </ul>
+                <br/>
             </fieldset>
-
         </form>
-
+        
         <br/>
 
         <form method="POST" ath:action="@{~/chat/aiheet/{id}(id=${aihe.getId()})}">

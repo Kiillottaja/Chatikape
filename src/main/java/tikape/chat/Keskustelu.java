@@ -11,19 +11,17 @@ package tikape.chat;
  */
 public class Keskustelu {
 
-//    //id integer PRIMARY KEY,
-//alue_id integer,
-//otsikko text NOT NULL,
-//FOREIGN KEY (alue_id) REFERENCES Alue (id)
-//CONSTRAINT Tarkastus CHECK (LENGTH(otsikko) > 2)
-//);
     private Integer id;
     private Alue alue;
     private String otsikko;
+    private int viesteja;
+    private String viimeisin;
 
     public Keskustelu(Integer id, String otsikko) {
         this.id = id;
         this.otsikko = otsikko;
+        this.viesteja = 0;
+        this.viimeisin = "";
     }
 
     public Keskustelu(String otsikko) {
@@ -33,7 +31,7 @@ public class Keskustelu {
     public void setAlue(Alue alue) {
         this.alue = alue;
     }
-    
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -50,9 +48,28 @@ public class Keskustelu {
         return alue;
     }
 
+    public int getViesteja() {
+        return viesteja;
+    }
+
+    public void setViesteja(int viestejä) {
+        this.viesteja = viestejä;
+    }
+
+    public String getViimeisin() {
+        return viimeisin;
+    }
+
+    public void setViimeisin(String viimeisin) {
+        this.viimeisin = viimeisin;
+    }
+
     @Override
     public String toString() {
-        return id + " " + alue + " " + otsikko;
+        if (viesteja == 0 & viimeisin.isEmpty()) {
+            return otsikko;
+        }
+        return otsikko + "\t" + viesteja + "\t" + viimeisin;
     }
 
 }

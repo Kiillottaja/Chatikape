@@ -126,12 +126,44 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
             Keskustelu k = new Keskustelu(id, otsikko);
 
             k.setAlue(aDao.findOne(alueId));
-            
+
             rs.close();
             stmt.close();
             conn.close();
 
             return k;
+        }
+    }
+
+    public List<Keskustelu> keskustelunViestienMaaraJaViimeisin(int alue_id) throws SQLException {
+        List<Keskustelu> list = new ArrayList();
+        try (Connection conn = data.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT k.id AS id, k.otsikko AS otsikko, COUNT(v.id) AS maara, MAX(v.pvm) AS viimeisin FROM Keskustelu k LEFT JOIN Viesti v ON k.id = v.keskustelu_id GROUP BY k.id HAVING k.alue_id = " + alue_id + " ORDER BY v.pvm, k.otsikko LIMIT 10;");
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Integer id = rs.getInt("id");
+                String otsikko = rs.getString("otsikko");
+                Integer maara = rs.getInt("maara");
+                String viimeisin = "";
+                if (rs.getString("viimeisin") != null) {
+                    viimeisin = rs.getString("viimeisin");
+                }
+                Keskustelu k = new Keskustelu(id, otsikko);
+                k.setAlue(aDao.findOne(alue_id));
+
+                k.setViesteja(maara);
+                k.setViimeisin(viimeisin);
+
+                list.add(k);
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            return list;
         }
     }
 

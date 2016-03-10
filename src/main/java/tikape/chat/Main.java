@@ -180,8 +180,10 @@ public class Main {
             String otsikko = "Alue: " + aDao.findOne(id).getNimi();
 
             map.put("otsikko", otsikko);
-            map.put("aihe", aDao.findOne(id));
-            map.put("keskustelut", aDao.alueenKeskustelut(aDao.findOne(id)));
+
+            map.put("keskustelut", keDao.keskustelunViestienMaaraJaViimeisin(id));
+            String otsikot = "\t    Otsikko    \t    Viestien määrä    \t    Viimeisin viesti";
+            map.put("otsikot", otsikot);
 
             return new ModelAndView(map, "alueenKeskustelut");
         }, new ThymeleafTemplateEngine());
@@ -253,7 +255,7 @@ public class Main {
             if (nimimerkki.isEmpty()) {
                 return "Kirjautuminen epäonnistui. Kirjaudu uudelleen!"
                         + "<br/>"
-                        + "<a href=/chat/>"
+                        + "<a href=/chat>"
                         + "<span> Takaisin </span> "
                         + "</a>";
             }
