@@ -10,7 +10,9 @@ package tikape.chat.Dao;
  * @author teemupekkarinen
  */
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import tikape.chat.*;
 
@@ -89,7 +91,7 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     public void delete(Integer key) throws SQLException {
         try (Connection conn = data.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Viesti WHERE id = ?;");
-            
+
             stmt.setInt(1, key);
 
             stmt.executeUpdate();
@@ -136,11 +138,13 @@ public class ViestiDao implements Dao<Viesti, Integer> {
         try (Connection conn = data.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Viesti(nimimerkki, keskustelu_id, alue_id, teksti) VALUES(?,?,?,?);");
 
+           java.sql.Timestamp ts = new Timestamp(System.currentTimeMillis());
+           
             stmt.setString(1, v.getKayttaja().getNimimerkki());
             stmt.setInt(2, v.getKeskustelu().getId());
             stmt.setInt(3, v.getAlue().getId());
             stmt.setString(4, v.getTeksti());
-            
+
             stmt.executeUpdate();
 
             stmt.close();
