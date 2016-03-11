@@ -51,7 +51,7 @@ public class Main {
         KayttajaDao kaDao = new KayttajaDao(data);
         AlueDao aDao = new AlueDao(data);
         KeskusteluDao keDao = new KeskusteluDao(data, aDao);
-        ViestiDao vDao = new ViestiDao(data, kaDao, keDao, aDao);
+        ViestiDao vDao = new ViestiDao(data, kaDao, keDao);
         Kayttaja nykyinen = new Kayttaja("");
 
         get("/chat", (req, res) -> {
@@ -147,7 +147,7 @@ public class Main {
             
             HashMap map = new HashMap<>();
             map.put("teksti", "Keskustelualueet");
-            map.put("alueet", vDao.alueViestitYhteensaViimeisinViesti());
+            map.put("alueet", aDao.alueViestitYhteensaViimeisinViesti());
             String otsikot = "\t    Alue    \t    Viestejä yhteensä    \t    Viimeisin viesti";
             map.put("otsikot", otsikot);
 

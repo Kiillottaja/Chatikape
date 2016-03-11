@@ -82,7 +82,7 @@ public class AlueDao implements Dao<Alue, Integer> {
     public void delete(Integer key) throws SQLException {
         try (Connection conn = data.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("DELETE FROM Alue WHERE id = ?;");
-            
+
             stmt.setInt(1, key);
 
             stmt.executeUpdate();
@@ -122,7 +122,7 @@ public class AlueDao implements Dao<Alue, Integer> {
     public void lisaaAlue(String alue) throws SQLException {
         try (Connection conn = data.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO Alue (nimi) VALUES (?);");
-            
+
             stmt.setString(1, alue);
 
             stmt.executeUpdate();
@@ -153,6 +153,38 @@ public class AlueDao implements Dao<Alue, Integer> {
             conn.close();
 
             return a;
+        }
+    }
+
+    public List<Alue> alueViestitYhteensaViimeisinViesti() throws SQLException {
+
+        List<Alue> list = new ArrayList();
+        try (Connection conn = data.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT a.id AS id, a.nimi AS nimi, COUNT(v.id) AS maara, MAX(v.pvm) AS viimeisin FROM Alue a LEFT JOIN Keskustelu ke ON a.id = ke.alue_id LEFT JOIN Viesti v ON v.keskustelu_id=ke.id Group BY a.nimi ORDER BY a.nimi;");
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                Integer id = rs.getInt("id");
+                String nimi = rs.getString("nimi");
+                Integer maara = rs.getInt("maara");
+                String viimeisin = "-";
+                if (rs.getString("viimeisin") != null) {
+                    viimeisin = rs.getString("viimeisin");
+                }
+                Alue ak = new Alue(id, nimi);
+
+                ak.setViesteja(maara);
+                ak.setViimeisin(viimeisin);
+
+                list.add(ak);
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            return list;
         }
     }
 
