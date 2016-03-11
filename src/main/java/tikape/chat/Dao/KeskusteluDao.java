@@ -85,9 +85,11 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     @Override
     public void delete(Integer key) throws SQLException {
         try (Connection conn = data.getConnection()) {
-            Statement stmt = conn.createStatement();
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Keskustelu WHERE id = ?;");
+            
+            stmt.setInt(1, key);
 
-            stmt.executeUpdate("DELETE FROM Keskustelu WHERE id = " + key + ";");
+            stmt.executeUpdate();
 
             stmt.close();
             conn.close();
@@ -96,11 +98,13 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
 
     public void lisaaKeskustelu(Keskustelu k) throws SQLException {
         try (Connection conn = data.getConnection()) {
-            Statement stmt = conn.createStatement();
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Keskustelu (alue_id, otsikko) VALUES (?,?);");
+            
+            stmt.setInt(1, k.getAlue().getId());
+            stmt.setString(2, k.getOtsikko());
+            
 
-            stmt.executeUpdate("INSERT INTO Keskustelu (alue_id, otsikko) "
-                    + "VALUES (" + k.getAlue().getId() + ", "
-                    + "'" + k.getOtsikko() + "');");
+            stmt.executeUpdate();
 
             stmt.close();
 
@@ -138,8 +142,10 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     public List<Keskustelu> keskustelunViestienMaaraJaViimeisin(int alue_id) throws SQLException {
         List<Keskustelu> list = new ArrayList();
         try (Connection conn = data.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT k.id AS id, k.otsikko AS otsikko, COUNT(v.id) AS maara, MAX(v.pvm) AS viimeisin FROM Keskustelu k LEFT JOIN Viesti v ON k.id = v.keskustelu_id GROUP BY k.id HAVING k.alue_id = " + alue_id + " ORDER BY v.pvm, k.otsikko LIMIT 10;");
+            PreparedStatement stmt = conn.prepareStatement("SELECT k.id AS id, k.otsikko AS otsikko, COUNT(v.id) AS maara, MAX(v.pvm) AS viimeisin FROM Keskustelu k LEFT JOIN Viesti v ON k.id = v.keskustelu_id GROUP BY k.id HAVING k.alue_id = ? ORDER BY v.pvm, k.otsikko LIMIT 10;");
 
+            stmt.setInt(1, alue_id);
+            
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {

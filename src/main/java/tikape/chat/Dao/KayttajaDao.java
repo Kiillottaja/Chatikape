@@ -79,9 +79,11 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
     @Override
     public void delete(String key) throws SQLException {
         try (Connection conn = data.getConnection()) {
-            Statement stmt = conn.createStatement();
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Kayttaja WHERE nimimerkki = ?;");
+            
+            stmt.setString(1, key);
 
-            stmt.executeUpdate("DELETE FROM Kayttaja WHERE nimimerkki = '" + key + "';");
+            stmt.executeUpdate();
 
             stmt.close();
             conn.close();
@@ -90,10 +92,13 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
 
     public void lisaaKayttaja(Kayttaja kayttaja) throws SQLException {
         try (Connection conn = data.getConnection()) {
-            Statement stmt = conn.createStatement();
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Kayttaja (nimimerkki, salasana) VALUES (?,?);");
+            
+            stmt.setString(1, kayttaja.getNimimerkki());
+            stmt.setString(2, kayttaja.getSalasana());
 
-            stmt.executeUpdate("INSERT INTO Kayttaja (nimimerkki, salasana) VALUES ('" + kayttaja.getNimimerkki() + "', '" + kayttaja.getSalasana() + "');");
-          
+            stmt.executeUpdate();
+
             stmt.close();
             conn.close();
         }
@@ -116,11 +121,11 @@ public class KayttajaDao implements Dao<Kayttaja, String> {
                 return false;
             }
             String salasana = rs.getString("salasana");
-            
+
             if (!kayttaja.getSalasana().equals(salasana)) {
                 return false;
             }
-            
+
             return true;
         }
     }

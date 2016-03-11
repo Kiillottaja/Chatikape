@@ -81,9 +81,11 @@ public class AlueDao implements Dao<Alue, Integer> {
     @Override
     public void delete(Integer key) throws SQLException {
         try (Connection conn = data.getConnection()) {
-            Statement stmt = conn.createStatement();
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Alue WHERE id = ?;");
+            
+            stmt.setInt(1, key);
 
-            stmt.executeUpdate("DELETE FROM Alue WHERE id = " + key + ";");
+            stmt.executeUpdate();
 
             stmt.close();
             conn.close();
@@ -119,9 +121,11 @@ public class AlueDao implements Dao<Alue, Integer> {
 
     public void lisaaAlue(String alue) throws SQLException {
         try (Connection conn = data.getConnection()) {
-            Statement stmt = conn.createStatement();
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Alue (nimi) VALUES (?);");
+            
+            stmt.setString(1, alue);
 
-            stmt.executeUpdate("INSERT INTO Alue (nimi) VALUES ('" + alue + "');");
+            stmt.executeUpdate();
             stmt.close();
 
             conn.close();

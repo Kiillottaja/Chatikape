@@ -90,9 +90,11 @@ public class ViestiDao implements Dao<Viesti, Integer> {
     @Override
     public void delete(Integer key) throws SQLException {
         try (Connection conn = data.getConnection()) {
-            Statement stmt = conn.createStatement();
+            PreparedStatement stmt = conn.prepareStatement("DELETE FROM Viesti WHERE id = ?;");
+            
+            stmt.setInt(1, key);
 
-            stmt.executeUpdate("DELETE FROM Viesti WHERE id = " + key + ";");
+            stmt.executeUpdate();
 
             stmt.close();
             conn.close();
@@ -134,9 +136,14 @@ public class ViestiDao implements Dao<Viesti, Integer> {
 
     public void lisaaViesti(Viesti v) throws SQLException {
         try (Connection conn = data.getConnection()) {
-            Statement stmt = conn.createStatement();
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO Viesti(nimimerkki, keskustelu_id, alue_id, teksti) VALUES(?,?,?,?);");
 
-            stmt.executeUpdate("INSERT INTO Viesti(nimimerkki, keskustelu_id, alue_id, teksti) VALUES('" + v.getKayttaja().getNimimerkki() + "', " + v.getKeskustelu().getId() + ", " + v.getAlue().getId() + ", '" + v.getTeksti() + "');");
+            stmt.setString(1, v.getKayttaja().getNimimerkki());
+            stmt.setInt(2, v.getKeskustelu().getId());
+            stmt.setInt(3, v.getAlue().getId());
+            stmt.setString(4, v.getTeksti());
+            
+            stmt.executeUpdate();
 
             stmt.close();
             conn.close();
