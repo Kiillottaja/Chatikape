@@ -13,15 +13,6 @@ import java.sql.Timestamp;
  */
 public class Viesti {
 
-//id integer PRIMARY KEY,
-//nimimerkki VARCHAR(50),
-//keskustelu_id integer,
-//teksti VARCHAR(160) NOT NULL,
-//pvm TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-//FOREIGN KEY (nimimerkki) REFERENCES Kayttaja (nimimerkki),
-//FOREIGN KEY (keskustelu_id) REFERENCES Keskustelu (id)
-//FOREIGN KEY (alue_id) REFERENCES Alue (id)
-//);
     private int id;
     private String teksti;
     private String pvm;

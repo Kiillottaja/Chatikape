@@ -8,7 +8,6 @@ package tikape.chat;
 import java.sql.*;
 import java.util.*;
 import java.net.*;
-import static spark.Spark.init;
 
 /**
  *

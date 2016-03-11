@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import tikape.chat.Alue;
 import tikape.chat.Database;
 import tikape.chat.Kayttaja;
 

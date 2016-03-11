@@ -14,9 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import tikape.chat.Alue;
 import tikape.chat.Database;
-import tikape.chat.Kayttaja;
 import tikape.chat.Keskustelu;
-import tikape.chat.Viesti;
 
 /**
  *
