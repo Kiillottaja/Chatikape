@@ -21,6 +21,7 @@ public class EscapeUtils {
     static {
         m.put(60, "&lt;");   // < - less-than
         m.put(62, "&gt;");   // > - greater-than
+        m.put(59, "&sc;");  // ; - semicolon
     }
 
     public static String escapeHtml(String str) {
