@@ -19,11 +19,8 @@ public class EscapeUtils {
     public static final HashMap m = new HashMap();
 
     static {
-        m.put(34, "&quot;"); // < - less-than
         m.put(60, "&lt;");   // < - less-than
         m.put(62, "&gt;");   // > - greater-than
-        //User needs to map all html entities with their corresponding decimal values. 
-        //Please refer to below table for mapping of entities and integer value of a char
     }
 
     public static String escapeHtml(String str) {
