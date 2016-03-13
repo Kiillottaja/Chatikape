@@ -20,7 +20,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws Exception  {
+    public static void main(String[] args) throws Exception {
         // TODO code application logic here
 
         // asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
@@ -108,8 +108,24 @@ public class Main {
                         + "</a>";
             }
 
+            if (nimimerkki.length() > 50) {
+                return "Nimimerkki liian pitkä. Anna alle 50 merkkiä pitkä nimimerkki"
+                        + "<br/>"
+                        + "<a href = '/chat/luokayttaja'> "
+                        + "<span> Takaisin </span> "
+                        + "</a>";
+            }
+
             if (salasana.length() < 3) {
-                return "Salasana liian lyhyt. Anna yli 2 merkkiä pitkä salasana"
+                return "Salasana on liian lyhyt. Anna yli 2 merkkiä pitkä salasana"
+                        + "<br/>"
+                        + "<a href = '/chat/luokayttaja'> "
+                        + "<span> Takaisin </span> "
+                        + "</a>";
+            }
+
+            if (salasana.length() > 20) {
+                return "Salasana on liian pitkä. Anna alle 20 merkkiä pitkä salasana"
                         + "<br/>"
                         + "<a href = '/chat/luokayttaja'> "
                         + "<span> Takaisin </span> "
@@ -129,13 +145,13 @@ public class Main {
         });
 
         get("/chat/alueet", (req, res) -> {
-            
+
             if (nykyinen.getNimimerkki().isEmpty()) {
                 HashMap map = new HashMap<>();
 
                 return new ModelAndView(map, "index");
             }
-            
+
             HashMap map = new HashMap<>();
             map.put("teksti", "Keskustelualueet");
             map.put("alueet", aDao.alueViestitYhteensaViimeisinViesti());
@@ -157,8 +173,16 @@ public class Main {
                         + "</a>";
             }
 
-            if (alue.isEmpty()) {
-                return "Anna pidempi alueen nimi"
+            if (alue.length() < 3) {
+                return "Anna yli 2 merkkiä pitkä alueen nimi"
+                        + "<br/>"
+                        + "<a href = '/chat/alueet'> "
+                        + "<span> Takaisin </span> "
+                        + "</a>";
+            }
+
+            if (alue.length() > 30) {
+                return "Anna alle 30 merkkiä pitkä alueen nimi"
                         + "<br/>"
                         + "<a href = '/chat/alueet'> "
                         + "<span> Takaisin </span> "
@@ -172,13 +196,13 @@ public class Main {
         });
 
         get("/chat/alueet/:id", (req, res) -> {
-                        
+
             if (nykyinen.getNimimerkki().isEmpty()) {
                 HashMap map = new HashMap<>();
 
                 return new ModelAndView(map, "index");
             }
-            
+
             HashMap map = new HashMap<>();
             int id = Integer.parseInt(req.params("id"));
 
@@ -208,8 +232,16 @@ public class Main {
                         + "</a>";
             }
 
-            if (otsikko.isEmpty()) {
-                return "Anna pidempi otsikko"
+            if (otsikko.length() < 3) {
+                return "Anna yli 2 merkkiä pitkä otsikko"
+                        + "<br/>"
+                        + "<a href = '/chat/alueet/" + id + "'> "
+                        + "<span> Takaisin </span> "
+                        + "</a>";
+            }
+
+            if (otsikko.length() > 30) {
+                return "Anna alle 30 merkkiä pitkä otsikko"
                         + "<br/>"
                         + "<a href = '/chat/alueet/" + id + "'> "
                         + "<span> Takaisin </span> "
@@ -223,13 +255,13 @@ public class Main {
         });
 
         get("/chat/:id/keskustelut", (req, res) -> {
-                                    
+
             if (nykyinen.getNimimerkki().isEmpty()) {
                 HashMap map = new HashMap<>();
 
                 return new ModelAndView(map, "index");
             }
-            
+
             HashMap map = new HashMap<>();
 
             String otsikko = "Alue: " + keDao.findOne(Integer.parseInt(req.params("id"))).getAlue().getNimi() + " -> " + keDao.findOne(Integer.parseInt(req.params("id"))).getOtsikko();
