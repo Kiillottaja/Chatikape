@@ -9,7 +9,12 @@
 
     <body bgcolor="#D3D3D3">
 
-        <h3 th:text="${otsikko}">testi</h3>
+        <h3>
+            <script th:inline="javascript">
+                var otsikko = /*[[${otsikko}]]*/ 'otsikko';
+                document.write(unescape(otsikko));
+            </script>
+        </h3>
 
         <form>
             <fieldset style="background-color: #F5F5F5; color: #FF9900; text-shadow: initial">
@@ -24,17 +29,17 @@
                         <td>
                             <a th:href="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}" style="color: #333333">
                                 <script th:inline="javascript">
-                                    var viesti = /*[[${keskustelu.getOtsikko()}]]*/ 'keskustelu';
-                                    document.write(unescape(viesti));
+                                    var otsikko = /*[[${keskustelu.getOtsikko()}]]*/ 'otsikko';
+                                    document.write(unescape(otsikko));
                                 </script>
                             </a>
 
                         </td>
                         <td>
-                            <span th:text="${keskustelu.getViesteja()}" style="color: #333333">keskusteluviesteja</span>
+                            <span th:text="${keskustelu.getViesteja()}" style="color: #333333">viesteja</span>
                         </td>
                         <td>
-                            <span th:text="${keskustelu.getViimeisin()}" style="color: #333333">keskusteluviimeisin</span>
+                            <span th:text="${keskustelu.getViimeisin()}" style="color: #333333">viimeisin</span>
                         </td>
                     </tr>
                 </table>

@@ -25,7 +25,12 @@
     <body bgcolor="#D3D3D3">
 
 
-        <h3 th:text="${otsikko}">testi</h3>
+        <h3>
+            <script th:inline="javascript">
+                var otsikko = /*[[${otsikko}]]*/ 'otsikko';
+                document.write(unescape(otsikko));
+            </script>
+        </h3>
 
         <form>
             <fieldset style="background-color: #F5F5F5; color: #FF9900; text-shadow: initial">
@@ -41,12 +46,12 @@
                     <table style="width:100%;">
                         <tr th:each="viesti: ${viestit}">
                             <td style="width:15%;" class="b2">
-                                <span th:text="${viesti.getPvm()}" style="color: #333333">viestipvm</span>
+                                <span th:text="${viesti.getPvm()}" style="color: #333333">pvm</span>
                             </td>
                             <td style="width:15%;color:#333333;" class="b2">
                                 <script th:inline="javascript">
-                                    var viesti = /*[[${viesti.getKayttaja().getNimimerkki()}]]*/ 'viestikayttaja';
-                                    document.write(unescape(viesti));
+                                    var nimimerkki = /*[[${viesti.getKayttaja().getNimimerkki()}]]*/ 'nimimerkki';
+                                    document.write(unescape(nimimerkki));
                                 </script>
                             </td>
                             <td style="color:#333333;" class="b2">

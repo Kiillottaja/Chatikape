@@ -23,16 +23,16 @@
                         <td>
                             <a th:href="@{~/chat/alueet/{id}(id=${alue.getId()})}" style="color: #333333">
                                 <script th:inline="javascript">
-                                    var viesti = /*[[${alue.getNimi()}]]*/ 'testi_alue';
-                                    document.write(unescape(viesti));
+                                    var alue = /*[[${alue.getNimi()}]]*/ 'alue';
+                                    document.write(unescape(alue));
                                 </script>
                             </a>
                         </td>
                         <td>
-                            <span th:text="${alue.getViesteja()}" style="color: #333333">alueviesteja</span>
+                            <span th:text="${alue.getViesteja()}" style="color: #333333">viesteja</span>
                         </td>
                         <td>
-                            <span th:text="${alue.getViimeisin()}" style="color: #333333">alueviimeisin</span>
+                            <span th:text="${alue.getViimeisin()}" style="color: #333333">viimeisin</span>
                         </td>
                     </tr>
                 </table>
