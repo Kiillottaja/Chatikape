@@ -20,7 +20,7 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception  {
         // TODO code application logic here
 
         // asetetaan portti jos heroku antaa PORT-ympäristömuuttujan
@@ -53,8 +53,8 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         post("/chat", (req, res) -> {
-            String nimimerkki = req.queryParams("nimimerkki");
-            String salasana = req.queryParams("salasana");
+            String nimimerkki = EscapeUtils.escapeHtml(req.queryParams("nimimerkki"));
+            String salasana = EscapeUtils.escapeHtml(req.queryParams("salasana"));
 
             Kayttaja kayt = new Kayttaja(nimimerkki, salasana);
             if (kaDao.onkoTietokannassa(kayt)) {
@@ -80,9 +80,9 @@ public class Main {
         }, new ThymeleafTemplateEngine());
 
         post("/chat/luokayttaja", (req, res) -> {
-            String nimimerkki = req.queryParams("nimimerkki");
-            String salasana = req.queryParams("salasana");
-            String salasana2 = req.queryParams("salasana2");
+            String nimimerkki = EscapeUtils.escapeHtml(req.queryParams("nimimerkki"));
+            String salasana = EscapeUtils.escapeHtml(req.queryParams("salasana"));
+            String salasana2 = EscapeUtils.escapeHtml(req.queryParams("salasana2"));
 
             if (kaDao.findOne(nimimerkki) != null) {
                 return "Nimimerkki on jo käytössä"
@@ -147,7 +147,7 @@ public class Main {
 
         post("/chat/alueet", (req, res) -> {
             String alue = "";
-            alue = req.queryParams("alue");
+            alue = EscapeUtils.escapeHtml(req.queryParams("alue"));
 
             if (aDao.haeNimella(alue) != null) {
                 return "Alue on jo olemassa"
@@ -195,7 +195,7 @@ public class Main {
 
         post("/chat/alueet/:id", (req, res) -> {
             int id = Integer.parseInt(req.params("id"));
-            String otsikko = req.queryParams("otsikko");
+            String otsikko = EscapeUtils.escapeHtml(req.queryParams("otsikko"));
 
             Keskustelu k = new Keskustelu(otsikko);
             k.setAlue(aDao.findOne(id));
@@ -245,7 +245,7 @@ public class Main {
 
             String nimimerkki = nykyinen.getNimimerkki();
             String viesti = "";
-            viesti = req.queryParams("viesti");
+            viesti = EscapeUtils.escapeHtml(req.queryParams("viesti"));
             int id = Integer.parseInt(req.params("id"));
 
             if (viesti.length() > 160) {
