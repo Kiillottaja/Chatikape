@@ -40,21 +40,18 @@
                 <div class="scroll" id="bottom">
                     <table style="width:100%;">
                         <tr th:each="viesti: ${viestit}">
-                            <td style="width:15%;color:#333333;" class="b2">
-                                <script th:inline="javascript">
-                                    var viesti = /*[[${viesti.getPvm()}]]*/ 'testi_pvm';
-                                    document.write(unescape(viesti));
-                                </script>
+                            <td style="width:15%;" class="b2">
+                                <span th:text="${viesti.getPvm()}" style="color: #333333">viestipvm</span>
                             </td>
                             <td style="width:15%;color:#333333;" class="b2">
                                 <script th:inline="javascript">
-                                    var viesti = /*[[${viesti.getKayttaja().getNimimerkki()}]]*/ 'testi_kayttaja';
+                                    var viesti = /*[[${viesti.getKayttaja().getNimimerkki()}]]*/ 'viestikayttaja';
                                     document.write(unescape(viesti));
                                 </script>
                             </td>
                             <td style="color:#333333;" class="b2">
                                 <script th:inline="javascript">
-                                    var viesti = /*[[${viesti.getTeksti()}]]*/ 'testi_viesti';
+                                    var viesti = /*[[${viesti.getTeksti()}]]*/ 'viesti';
                                     document.write(unescape(viesti));
                                 </script>
                             </td>

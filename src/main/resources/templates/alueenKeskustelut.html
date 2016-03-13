@@ -22,19 +22,19 @@
                     </tr>
                     <tr th:each="keskustelu: ${keskustelut}">
                         <td>
-                            <a th:href="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}">
-                                <span th:text="${keskustelu.getOtsikko()}" style="color: #333333">aluenimi</span>
+                            <a th:href="@{~/chat/{id}/keskustelut(id=${keskustelu.getId()})}" style="color: #333333">
+                                <script th:inline="javascript">
+                                    var viesti = /*[[${keskustelu.getOtsikko()}]]*/ 'keskustelu';
+                                    document.write(unescape(viesti));
+                                </script>
                             </a>
+
                         </td>
                         <td>
-                            <a>
-                                <span th:text="${keskustelu.getViesteja()}" style="color: #333333">aluenimi</span>
-                            </a>
+                            <span th:text="${keskustelu.getViesteja()}" style="color: #333333">keskusteluviesteja</span>
                         </td>
                         <td>
-                            <a>
-                                <span th:text="${keskustelu.getViimeisin()}" style="color: #333333">aluenimi</span>
-                            </a>
+                            <span th:text="${keskustelu.getViimeisin()}" style="color: #333333">keskusteluviimeisin</span>
                         </td>
                     </tr>
                 </table>
