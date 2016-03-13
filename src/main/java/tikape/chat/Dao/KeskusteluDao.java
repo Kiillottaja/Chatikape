@@ -140,7 +140,7 @@ public class KeskusteluDao implements Dao<Keskustelu, Integer> {
     public List<Keskustelu> keskustelunViestienMaaraJaViimeisin(int alue_id) throws SQLException {
         List<Keskustelu> list = new ArrayList();
         try (Connection conn = data.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT k.id AS id, k.otsikko AS otsikko, COUNT(v.id) AS maara, MAX(v.pvm) AS viimeisin FROM Keskustelu k LEFT JOIN Viesti v ON k.id = v.keskustelu_id GROUP BY k.id HAVING k.alue_id = ? ORDER BY v.pvm DESC, k.otsikko DESC LIMIT 10;");
+            PreparedStatement stmt = conn.prepareStatement("SELECT k.id AS id, k.otsikko AS otsikko, COUNT(v.id) AS maara, MAX(v.pvm) AS viimeisin FROM Keskustelu k LEFT JOIN Viesti v ON k.id = v.keskustelu_id GROUP BY k.id HAVING k.alue_id = ? ORDER BY v.pvm, k.otsikko DESC LIMIT 10;");
 
             stmt.setInt(1, alue_id);
             
