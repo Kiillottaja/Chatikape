@@ -41,7 +41,7 @@ public class EscapeUtils {
             int ascii = (int) c;
             String entityName = (String) m.get(ascii);
             if (entityName == null) {
-                if (c > 0x7F) {
+                if (c > 0xFF) {
                     writer.write("&#");
                     writer.write(Integer.toString(c, 10));
                     writer.write(';');
